@@ -121,8 +121,7 @@ export default function AdminLogin() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
-                style={{ backgroundColor: '#f97316' }}
+                className={`button py-2 px-8 sm:text-base text-sm w-full ${loading ? "opacity-50" : ""}`}
               >
                 {loading ? (
                   <div className="flex items-center justify-center">

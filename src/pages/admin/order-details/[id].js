@@ -7,7 +7,7 @@ function orderDetails() {
   return (
     <>
       <Head>
-        <title>Zinger | OrderDetails</title>
+        <title>Station Bite | OrderDetails</title>
       </Head>
       <OrderDetails id={router.query?.id} admin />
     </>

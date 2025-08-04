@@ -1,4 +1,4 @@
-const LOCALSTORAGE_KEY_PREFIX = "Zinger";
+const LOCALSTORAGE_KEY_PREFIX = "StationBite";
 
 export default {
     get(item) {

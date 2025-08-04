@@ -32,6 +32,9 @@ function Banner() {
               <h1 className="font-semibold xl:text-7xl sm:text-6xl xxs:text-5xl text-4xl">
                 Don't <span>Wait!</span>
               </h1>
+              <p className="text-gray-600 mt-4 text-lg">
+                227 Station Road, Shottos
+              </p>
               <div className="flex items-center xl:mt-12 lg:mt-10  sm:mt-8 mt-6 gap-4 flex-wrap">
                 <button className="button lg:text-base xl:px-16 px-14" onClick={orderNow}>
                   Order Now

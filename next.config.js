@@ -10,4 +10,26 @@ module.exports = withPWA({
   env: {
     stripe_public_key: process.env.STRIPE_PUBLIC_KEY,
   },
+  // Configure images
+  images: {
+    unoptimized: true,
+    domains: ['localhost'],
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3005',
+        pathname: '/uploads/**',
+      },
+    ],
+  },
+  // Configure static file serving
+  async rewrites() {
+    return [
+      {
+        source: '/uploads/:path*',
+        destination: '/uploads/:path*',
+      },
+    ];
+  },
 });

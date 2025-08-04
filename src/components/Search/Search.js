@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { SearchIcon } from "@heroicons/react/outline";
 import Fade from "react-reveal/Fade";
-import Image from "next/image";
 import getDishes from "../../util/getDishes";
 import { useRouter } from "next/router";
 
@@ -14,6 +13,20 @@ function Search() {
     const router = useRouter();
     const options = {
         keys: ["title", "description", "category"],
+    };
+
+    // Process image URL to use the correct API endpoint for uploaded images
+    const getImageUrl = (imagePath) => {
+        if (!imagePath) return null;
+        
+        // If the image path starts with /uploads/, convert it to use the serve-image API
+        if (imagePath.startsWith('/uploads/')) {
+            const filename = imagePath.split('/').pop();
+            return `/api/serve-image?filename=${filename}`;
+        }
+        
+        // If it's already an API URL or a static image, return as is
+        return imagePath;
     };
 
     const closeSearch = () => {
@@ -83,12 +96,10 @@ function Search() {
                                             {title}
                                         </h5>
                                         <div className="min-w-max">
-                                            <Image
-                                                src={image}
-                                                height={40}
-                                                width={40}
+                                            <img
+                                                src={getImageUrl(image)}
                                                 alt=""
-                                                objectFit="contain"
+                                                className="w-10 h-10 object-contain"
                                             />
                                         </div>
                                     </div>

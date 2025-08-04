@@ -28,12 +28,13 @@ function SideBarMenu({ closeSideBar }) {
     <div className="relative h-full w-full sideBarMenu bg-white px-8 py-6  font-medium md:hidden">
       <div>
         <Image
-          src="/img/Zinger.svg"
-          alt="Zinger"
+          src="/img/station-bite-logo.svg"
+          alt="Station Bite"
           className="cursor-pointer"
-          width={70}
+          width={120}
           objectFit="contain"
-          height={30}
+          height={45}
+          onClick={() => router.push("/")}
         />
       </div>
       <div className=" h-0.5 my-4 w-full bg-gray-100"></div>

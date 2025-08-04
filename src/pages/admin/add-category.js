@@ -43,6 +43,7 @@ function AddCategory() {
       }
     } catch (err) {
       console.error("Error adding category:", err);
+      
       if (err.response?.status === 401) {
         NormalToast("Session expired. Please login again.", true);
         // Redirect to login

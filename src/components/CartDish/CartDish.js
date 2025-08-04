@@ -19,6 +19,22 @@ function CartDish({
   const dispatch = useDispatch();
   const total = price * qty;
 
+  // Process image URL to use the correct API endpoint for uploaded images
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return null;
+    
+    // If the image path starts with /uploads/, convert it to use the serve-image API
+    if (imagePath.startsWith('/uploads/')) {
+      const filename = imagePath.split('/').pop();
+      return `/api/serve-image?filename=${filename}`;
+    }
+    
+    // If it's already an API URL or a static image, return as is
+    return imagePath;
+  };
+
+  const processedImageUrl = getImageUrl(image);
+
   const removeItemFromCart = () => dispatch(removeFromCart({ _id }));
   const incQty = () =>
     dispatch(
@@ -53,7 +69,7 @@ function CartDish({
       >
         <div className="text-center sm:text-left my-auto mx-auto">
           <Image
-            src={image}
+            src={processedImageUrl}
             width={100}
             height={100}
             objectFit="cover"

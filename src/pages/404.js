@@ -6,7 +6,7 @@ export default function Custom404() {
   return (
     <>
       <Head>
-        <title>Zinger | Page Not Found</title>
+        <title>Station Bite | Page Not Found</title>
       </Head>
 
       <div className="heightFix flex items-center justify-center text-center ">

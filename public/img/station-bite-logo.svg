@@ -1,0 +1,6 @@
+<svg width="120" height="40" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <text x="10" y="28" font-family="Poppins, sans-serif" font-size="18" font-weight="bold" fill="#ab3c2a">Station</text>
+  <text x="10" y="40" font-family="Poppins, sans-serif" font-size="18" font-weight="bold" fill="#792a1e">Bite</text>
+  <circle cx="95" cy="20" r="8" fill="#ab3c2a"/>
+  <circle cx="95" cy="20" r="4" fill="white"/>
+</svg> 

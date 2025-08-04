@@ -20,17 +20,15 @@ function HeaderMobile() {
             <div>
               <MenuIcon className="w-8" onClick={() => setShowBar(true)} />
             </div>
-            <div className="flex items-center">
-              <Image
-                src="/img/Zinger.svg"
-                alt="Zinger"
-                className="cursor-pointer"
-                width={75}
-                objectFit="contain"
-                height={35}
-                onClick={() => router.push("/")}
-              />
-            </div>
+            <Image
+              src="/img/station-bite-logo.svg"
+              alt="Station Bite"
+              className="cursor-pointer"
+              width={120}
+              objectFit="contain"
+              height={45}
+              onClick={() => router.push("/")}
+            />
           </div>
           <div
             className="relative cursor-pointer"

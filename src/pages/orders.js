@@ -18,7 +18,7 @@ function Orders() {
   return (
     <>
       <Head>
-        <title>Zinger | Orders</title>
+        <title>Station Bite | Orders</title>
       </Head>
       <div className=" heightFix px-6">
         <main className="max-w-screen-xl mx-auto md:py-20 py-12 pb-20">

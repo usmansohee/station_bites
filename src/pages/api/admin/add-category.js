@@ -1,4 +1,5 @@
 import { connectToDatabase } from "../../../util/mongodb";
+import { ObjectId } from "mongodb";
 
 export default async (req, res) => {
     try {
@@ -12,9 +13,17 @@ export default async (req, res) => {
                 return res.status(401).json({ message: "Unauthorized - No session" });
             }
             
+            // Convert string session ID to ObjectId
+            let sessionObjectId;
+            try {
+                sessionObjectId = new ObjectId(sessionId);
+            } catch (error) {
+                return res.status(401).json({ message: "Unauthorized - Invalid session format" });
+            }
+            
             // Find session in database
             const session = await db.collection("sessions").findOne({ 
-                _id: sessionId,
+                _id: sessionObjectId,
                 expires: { $gt: new Date().toISOString() }
             });
             

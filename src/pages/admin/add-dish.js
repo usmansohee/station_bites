@@ -4,6 +4,7 @@ import NormalToast from "../../util/Toast/NormalToast";
 import { connectToDatabase } from "../../util/mongodb";
 import getCategories from "../../util/getCategories";
 import Head from "next/head";
+import { useRouter } from "next/router";
 
 function AddDish(props) {
   const [title, setTitle] = useState("");
@@ -15,6 +16,7 @@ function AddDish(props) {
   const [category, setCategory] = useState(props?.categories[0]?.name);
   const { categories, error } = getCategories(props?.categories);
   const [disabled, setDisabled] = useState(false);
+  const router = useRouter();
 
   if (error) {
     console.error(error);
@@ -60,22 +62,46 @@ function AddDish(props) {
         throw new Error('No session');
       }
 
+      console.log("Uploading image with session ID:", sessionId);
+      console.log("Image file:", imageFile);
+
       const response = await axios.post('/api/admin/upload-image', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'x-session-id': sessionId
         },
       });
+      
+      console.log("Upload response:", response.data);
       return response.data.imageUrl;
     } catch (error) {
       console.error('Image upload failed:', error);
+      console.error('Error response:', error.response?.data);
+      console.error('Error status:', error.response?.status);
+      
       if (error.response?.status === 401) {
         NormalToast("Session expired. Please login again.", true);
         window.location.href = '/admin-login';
+      } else if (error.response?.data?.message) {
+        NormalToast(error.response.data.message, true);
       } else {
         NormalToast("Image upload failed", true);
       }
       throw new Error('Image upload failed');
+    }
+  };
+
+  const clearForm = () => {
+    setTitle("");
+    setDescription("");
+    setPrice("");
+    setImageFile(null);
+    setImagePreview("");
+    setCategory(props?.categories[0]?.name || "");
+    // Clear the file input
+    const fileInput = document.querySelector('input[type="file"]');
+    if (fileInput) {
+      fileInput.value = '';
     }
   };
 
@@ -90,29 +116,63 @@ function AddDish(props) {
     setDisabled(true);
 
     try {
+      // Get session ID from localStorage
+      const sessionId = localStorage.getItem("adminSessionId");
+      
+      if (!sessionId) {
+        NormalToast("Session expired. Please login again.", true);
+        return;
+      }
+
+      console.log("Starting form submission with session ID:", sessionId);
+
       // Upload image first
       const imageUrl = await uploadImage();
+      console.log("Image uploaded successfully:", imageUrl);
       
       // Add dish with uploaded image URL
-      await axios.post("/api/admin/add-dish", {
+      const dishData = {
         title,
         category,
         description,
         price,
         image: imageUrl,
+      };
+      
+      console.log("Submitting dish data:", dishData);
+      
+      const response = await axios.post("/api/admin/add-dish", dishData, {
+        headers: {
+          'x-session-id': sessionId
+        }
       });
 
+      console.log("Add dish response:", response.data);
+
       NormalToast("Dish added successfully");
-      setTitle("");
-      setDescription("");
-      setPrice("");
-      setImageFile(null);
-      setImagePreview("");
-      setCategory("");
-      setDisabled(false);
+      
+      // Clear the form
+      clearForm();
+      
+      // Redirect to dishes page after a short delay
+      setTimeout(() => {
+        router.push('/admin/dishes');
+      }, 1000);
+      
     } catch (err) {
-      NormalToast("Something went wrong", true);
-      console.error(err);
+      console.error("Error adding dish:", err);
+      console.error("Error response:", err.response?.data);
+      console.error("Error status:", err.response?.status);
+      
+      if (err.response?.status === 401) {
+        NormalToast("Session expired. Please login again.", true);
+        window.location.href = '/admin-login';
+      } else if (err.response?.data?.message) {
+        NormalToast(err.response.data.message, true);
+      } else {
+        NormalToast("Something went wrong", true);
+      }
+    } finally {
       setDisabled(false);
     }
   };
@@ -122,12 +182,12 @@ function AddDish(props) {
       <Head>
         <title>Station Bites | Add Dish</title>
       </Head>
-      <div className="heightFixAdmin px-4 lg:py-4 sm:py-3 py-3 overflow-y-auto pb-20">
+      <div className="heightFixAdmin px-4 lg:py-6 sm:py-4 py-4 overflow-y-auto">
         <div className="mx-auto max-w-screen-sm sm:text-base text-sm">
-          <h2 className="lg:text-2xl sm:text-xl text-lg font-bold mb-3">
+          <h2 className="lg:text-3xl sm:text-2xl text-xl font-bold mb-4">
             Add Dish
           </h2>
-          <form onSubmit={formHandler} className="flex flex-col gap-2">
+          <form onSubmit={formHandler} className="flex flex-col gap-4">
             <input
               type="text"
               required
@@ -142,6 +202,7 @@ function AddDish(props) {
               className="bg-gray-100 py-2 px-3 rounded-md outline-none border border-gray-200 capitalize"
               onChange={(e) => setCategory(e.target.value)}
               disabled={disabled}
+              value={category}
             >
               {categories?.map((category) => (
                 <option value={category?.name} key={`option-${category?._id}`}>
@@ -152,11 +213,11 @@ function AddDish(props) {
             <textarea
               required
               placeholder="Description"
-              className="bg-gray-100 border border-gray-200 py-2 px-3 rounded-md resize-none h-16 outline-none"
+              className="bg-gray-100 border border-gray-200 py-2 px-3 rounded-md resize-none h-20 outline-none"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               cols="25"
-              rows="6"
+              rows="8"
               disabled={disabled}
             ></textarea>
             <input
@@ -170,7 +231,7 @@ function AddDish(props) {
             />
             
             {/* Image Upload Section */}
-            <div className="space-y-1">
+            <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">
                 Dish Image *
               </label>
@@ -183,12 +244,12 @@ function AddDish(props) {
                 required
               />
               {imagePreview && (
-                <div className="mt-1">
-                  <p className="text-xs text-gray-600 mb-1">Preview:</p>
+                <div className="mt-2">
+                  <p className="text-sm text-gray-600 mb-1">Preview:</p>
                   <img 
                     src={imagePreview} 
                     alt="Preview" 
-                    className="w-16 h-16 object-cover rounded-md border shadow-sm"
+                    className="w-24 h-24 object-cover rounded-md border shadow-sm"
                   />
                 </div>
               )}
@@ -199,11 +260,11 @@ function AddDish(props) {
             
             <button
               type="submit"
-              className={`button py-2 px-8 sm:text-base text-sm mt-2 mb-4 ${disabled ? "opacity-50" : ""
+              className={`button py-2 px-8 sm:text-base text-sm mt-3 mb-4 ${disabled ? "opacity-50" : ""
                 }`}
               disabled={disabled}
             >
-              Submit
+              {disabled ? "Adding..." : "Submit"}
             </button>
           </form>
         </div>

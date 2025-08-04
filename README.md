@@ -16,137 +16,82 @@
 
 
 
-# Zinger
+# Station Bite
 
-Food ordering website for Zinger restaurant built using Next.js, TailwindCSS, Redux, Mongodb
+Food ordering website for Station Bite restaurant built using Next.js, TailwindCSS, Redux, Mongodb
 
 ![Logo](https://zinger.vercel.app/_next/image?url=%2Fimg%2FZinger.svg&w=128&q=75)
 
 <img src="https://zinger.vercel.app/img/favicons/apple-touch-icon.png" height="100" alt="" />
 
-
-## Demo
+## 🚀 Live Demo
 
 https://zinger.vercel.app
 
-
-## Screenshots
+## 📱 App Screenshot
 
 ![App Screenshot](https://i.ibb.co/8x3ZGnG/zinger.gif)
 
-  
-## Features
+## ✨ Features
 
-- Responsive
-- Real Time and Dynamic
-- Progressive Web App (PWA)
-- Payment Gateway integration
--  Admin Dashboard with functionalities like adding products, deleting a product, updating products, adding a category, viewing users registered, updating order status, and canceling orders.
-- State management using Redux
-- Google authentication
-- Track order status real time
-- Cancel orders
+- **Food Ordering**: Browse and order food items
+- **User Authentication**: Secure login and registration
+- **Admin Panel**: Manage dishes, orders, and users
+- **Real-time Updates**: Live order status updates
+- **Responsive Design**: Works on all devices
+- **Payment Integration**: Stripe payment processing
+- **Order Management**: Track order history and status
+- **Search Functionality**: Find dishes quickly
+- **Cart Management**: Add/remove items from cart
 
+## 🛠️ Tech Stack
 
-## Run Locally
+- **Frontend**: Next.js, React, TailwindCSS
+- **State Management**: Redux Toolkit
+- **Backend**: Next.js API Routes
+- **Database**: MongoDB
+- **Authentication**: NextAuth.js
+- **Payment**: Stripe
+- **Deployment**: Vercel
 
-Clone the project
+## 📦 Installation
 
+1. Clone the repository
 ```bash
-  git clone https://github.com/Pinqua/Zinger.git
+git clone https://github.com/Pinqua/Zinger.git
 ```
 
-Go to the project directory
-
+2. Install dependencies
 ```bash
-  cd Zinger
+npm install
 ```
 
-Install dependencies
-
+3. Set up environment variables
 ```bash
-  npm install
+cp .env.example .env.local
 ```
 
-Create a **.env.local** file inside project directory with fields given below.
-
+4. Run the development server
 ```bash
-  # Authentication
-  GOOGLE_ID=
-  GOOGLE_SECRET=
-
-  # Need to add this to... google cloud
-  # http://localhost:3000/api/auth/callback/google
-
-
-  NEXTAUTH_URL=http://localhost:3000
-
-
-  HOST=http://localhost:3000
-
-
-  # Stripe
-  STRIPE_PUBLIC_KEY=
-  STRIPE_SECRET_KEY=
-
-
-  # Stripe Terminal/CLI
-  STRIPE_SIGNING_SECRET=
-
-  # Testing Webhook
-  # stripe listen --forward-to localhost:3000/api/webhook
-
-
-  # Mongodb Database
-  
-  # Your database name
-  MONGODB_DB=
-  # Add monogdb connection url 
-  MONGO_URI=
-  # Add mongodb connection url but with driver node.js and version 2.2.12 or later 
-  MONGODB_URI=
-  
+npm run dev
 ```
 
-Start the server
+## 🔧 Configuration
 
-```bash
-  npm run dev
-```
- 
-Admin Access 
+Create a `.env.local` file with the following variables:
 
-```
- To gain admin access, you need to add your email ID to the admin collection in MongoDB.
- After adding it, try logging in with the same email ID, and you should see the dashboard option.
-```
-![182356880-d13b94f1-2a21-4e4e-8d1a-bb4faca0e61d (1)](https://user-images.githubusercontent.com/69719134/235835845-66a9ba70-e8d3-47f3-a213-298fcf3d0b89.png)
-
-
-
-
-## Stripe Payment Gateway
-
-Test Stripe payment gateway with these card details.
-
-```
-  BRAND - VISA
-  CARD NUMBER - 4242424242424242
-  CVC - Any 3 digits
-  DATE - Any future date
+```env
+MONGODB_URI=your_mongodb_connection_string
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your_nextauth_secret
+STRIPE_SECRET_KEY=your_stripe_secret_key
+STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
+STRIPE_WEBHOOK_SECRET=your_stripe_webhook_secret
 ```
 
-See details: https://stripe.com/docs/testing
-  
+## 📝 License
 
-## Contributing
-
-Contributions are always welcome!
-
-  
-## License
-
-[MIT](https://choosealicense.com/licenses/mit/)
+This project is licensed under the MIT License.
 
 <br/>
 <br/>

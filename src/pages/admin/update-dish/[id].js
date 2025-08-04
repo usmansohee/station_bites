@@ -3,16 +3,18 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { connectToDatabase } from "../../../util/mongodb";
 import getCategories from "../../../util/getCategories";
-import { ObjectId } from "bson";
+import { ObjectId } from "mongodb";
 import NormalToast from "../../../util/Toast/NormalToast";
 import Head from "next/head";
 
 function UpdateDish(props) {
-  const [title, setTitle] = useState(props?.dish?.title);
-  const [description, setDescription] = useState(props?.dish?.description);
-  const [price, setPrice] = useState(props?.dish?.price);
-  const [image, setImage] = useState(props?.dish?.image);
-  const [category, setCategory] = useState(props?.dish?.category);
+  const [title, setTitle] = useState(props?.dish?.title || "");
+  const [description, setDescription] = useState(props?.dish?.description || "");
+  const [price, setPrice] = useState(props?.dish?.price || "");
+  const [image, setImage] = useState(props?.dish?.image || "");
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(props?.dish?.image || "");
+  const [category, setCategory] = useState(props?.dish?.category || "");
   const router = useRouter();
   const { categories, error } = getCategories(props?.categories);
   const [disabled, setDisabled] = useState(false);
@@ -21,37 +23,132 @@ function UpdateDish(props) {
     console.error(error);
   }
 
-  const formHandler = (e) => {
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        NormalToast("Please select an image file only", true);
+        e.target.value = '';
+        return;
+      }
+      
+      // Validate file size (5MB = 5 * 1024 * 1024 bytes)
+      if (file.size > 5 * 1024 * 1024) {
+        NormalToast("File size must be less than 5MB", true);
+        e.target.value = '';
+        return;
+      }
+      
+      setImageFile(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
+  const uploadImage = async () => {
+    if (!imageFile) {
+      return image; // Return existing image if no new file
+    }
+
+    const formData = new FormData();
+    formData.append('image', imageFile);
+
+    try {
+      // Get session ID from localStorage
+      const sessionId = localStorage.getItem("adminSessionId");
+      
+      if (!sessionId) {
+        NormalToast("Session expired. Please login again.", true);
+        throw new Error('No session');
+      }
+
+      const response = await axios.post('/api/admin/upload-image', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'x-session-id': sessionId
+        },
+      });
+      
+      return response.data.imageUrl;
+    } catch (error) {
+      console.error('Image upload failed:', error);
+      if (error.response?.status === 401) {
+        NormalToast("Session expired. Please login again.", true);
+        window.location.href = '/admin-login';
+      } else {
+        NormalToast("Image upload failed", true);
+      }
+      throw new Error('Image upload failed');
+    }
+  };
+
+  const formHandler = async (e) => {
     e.preventDefault();
     setDisabled(true);
-    axios
-      .post("/api/admin/update-dish", {
+
+    try {
+      // Get session ID from localStorage
+      const sessionId = localStorage.getItem("adminSessionId");
+      
+      if (!sessionId) {
+        NormalToast("Session expired. Please login again.", true);
+        return;
+      }
+
+      // Upload new image if provided
+      let finalImageUrl = image;
+      if (imageFile) {
+        finalImageUrl = await uploadImage();
+      }
+
+      const dishData = {
         _id: router.query.id,
         title,
         category,
         description,
         price,
-        image,
-      })
-      .then((res) => {
-        NormalToast("Updated successfully");
-        setDisabled(false);
-      })
-      .catch((err) => {
-        NormalToast("Something went wrong", err);
-        console.error(err);
-        setDisabled(false);
+        image: finalImageUrl,
+      };
+
+      const response = await axios.post("/api/admin/update-dish", dishData, {
+        headers: {
+          'x-session-id': sessionId
+        }
       });
+
+      if (response.status === 200) {
+        NormalToast("Dish updated successfully");
+        // Redirect to dishes page after a short delay
+        setTimeout(() => {
+          router.push('/admin/dishes');
+        }, 1000);
+      } else {
+        NormalToast("Failed to update dish", true);
+      }
+    } catch (err) {
+      console.error("Error updating dish:", err);
+      
+      if (err.response?.status === 401) {
+        NormalToast("Session expired. Please login again.", true);
+        window.location.href = '/admin-login';
+      } else if (err.response?.data?.message) {
+        NormalToast(err.response.data.message, true);
+      } else {
+        NormalToast("Something went wrong", true);
+      }
+    } finally {
+      setDisabled(false);
+    }
   };
 
   return (
     <>
       <Head>
-        <title>Zinger | Update Dish</title>
+        <title>Station Bites | Update Dish</title>
       </Head>
-      <div className="heightFixAdmin px-6 lg:py-20 sm:py-16 py-12">
-        <div className="mx-auto max-w-screen-sm sm:text-base  text-sm">
-          <h2 className="lg:text-4xl sm:text-3xl text-2xl  font-bold mb-6">
+      <div className="heightFixAdmin px-4 lg:py-6 sm:py-4 py-4 overflow-y-auto">
+        <div className="mx-auto max-w-screen-sm sm:text-base text-sm">
+          <h2 className="lg:text-3xl sm:text-2xl text-xl font-bold mb-4">
             Update Dish
           </h2>
           <form onSubmit={formHandler} className="flex flex-col gap-4">
@@ -60,57 +157,77 @@ function UpdateDish(props) {
               required
               value={title}
               placeholder="Title"
-              className="bg-gray-100 border border-gray-200 py-2 px-4 rounded-md outline-none"
+              className="bg-gray-100 py-2 px-3 rounded-md outline-none border border-gray-200"
               onChange={(e) => setTitle(e.target.value)}
               disabled={disabled}
             />
             <select
               required
-              className="bg-gray-100 border border-gray-200 py-2 px-4 rounded-md outline-none capitalize"
+              className="bg-gray-100 py-2 px-3 rounded-md outline-none border border-gray-200 capitalize"
               onChange={(e) => setCategory(e.target.value)}
               disabled={disabled}
+              value={category}
             >
-              {categories?.map((category) => (
-                <option value={category?.name} key={`option-${category?._id}`}>
-                  {category?.name}
+              {categories?.map((cat) => (
+                <option value={cat?.name} key={`option-${cat?._id}`}>
+                  {cat?.name}
                 </option>
               ))}
             </select>
             <textarea
               required
               placeholder="Description"
-              className="bg-gray-100 py-2 px-4  border border-gray-200 rounded-md h-24 resize-none outline-none"
+              className="bg-gray-100 border border-gray-200 py-2 px-3 rounded-md resize-none h-20 outline-none"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               cols="25"
-              rows="10"
+              rows="8"
               disabled={disabled}
             ></textarea>
             <input
               type="number"
               required
               placeholder="Price"
-              className="bg-gray-100 py-2 border border-gray-200 px-4 rounded-md outline-none"
+              className="bg-gray-100 border py-2 px-3 rounded-md outline-none border-gray-200"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
               disabled={disabled}
             />
-            <input
-              type="text"
-              required
-              placeholder="Image Url"
-              className="bg-gray-100 py-2 px-4 border border-gray-200 rounded-md outline-none"
-              value={image}
-              onChange={(e) => setImage(e.target.value)}
-              disabled={disabled}
-            />
+            
+            {/* Image Upload Section */}
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">
+                Dish Image
+              </label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="w-full bg-gray-100 py-2 px-3 rounded-md outline-none border border-gray-200 cursor-pointer"
+                disabled={disabled}
+              />
+              {imagePreview && (
+                <div className="mt-2">
+                  <p className="text-sm text-gray-600 mb-1">Preview:</p>
+                  <img 
+                    src={imagePreview} 
+                    alt="Preview" 
+                    className="w-24 h-24 object-cover rounded-md border shadow-sm"
+                  />
+                </div>
+              )}
+              <p className="text-xs text-gray-500">
+                Leave empty to keep current image. Maximum file size: 5MB. Supported formats: JPG, PNG, GIF, WebP
+              </p>
+            </div>
+            
             <button
               type="submit"
-              className={`button py-2 px-10 sm:text-base text-sm mt-4 ${disabled ? "opacity-50" : ""
+              className={`button py-2 px-8 sm:text-base text-sm mt-3 mb-4 ${disabled ? "opacity-50" : ""
                 }`}
               disabled={disabled}
             >
-              Submit
+              {disabled ? "Updating..." : "Update"}
             </button>
           </form>
         </div>
@@ -122,26 +239,14 @@ function UpdateDish(props) {
 UpdateDish.admin = true;
 export default UpdateDish;
 
-export const getStaticPaths = async () => {
-  const { db } = await connectToDatabase();
-  const dishes = await db.collection("dishes").find({}).toArray();
-  const paths = dishes.map((dish) => ({
-    params: { id: dish._id.toString() },
-  }));
-  return {
-    paths,
-    fallback: true,
-  };
-};
-
-export const getStaticProps = async (context) => {
+export const getServerSideProps = async (context) => {
   let dish;
   let categories;
   try {
     const { db } = await connectToDatabase();
     dish = await db
       .collection("dishes")
-      .findOne({ _id: ObjectId(context.params.id) });
+      .findOne({ _id: new ObjectId(context.params.id) });
     categories = await db.collection("categories").find({}).toArray();
   } catch (err) {
     console.error(err);
@@ -161,6 +266,5 @@ export const getStaticProps = async (context) => {
       dish,
       categories,
     },
-    revalidate: 1,
   };
 };
