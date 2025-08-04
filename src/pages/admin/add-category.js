@@ -7,49 +7,85 @@ function AddCategory() {
   const [categoryName, setCategoryName] = useState("");
   const [disabled, setDisabled] = useState(false);
 
-  const formHandler = (e) => {
-    setDisabled(true);
+  const formHandler = async (e) => {
     e.preventDefault();
-    axios
-      .post("/api/admin/add-category", { name: categoryName })
-      .then(() => {
+    
+    // Validate input
+    if (!categoryName.trim()) {
+      NormalToast("Please enter a category name", true);
+      return;
+    }
+    
+    setDisabled(true);
+    
+    try {
+      // Get session ID from localStorage
+      const sessionId = localStorage.getItem("adminSessionId");
+      
+      if (!sessionId) {
+        NormalToast("Session expired. Please login again.", true);
+        return;
+      }
+      
+      const response = await axios.post("/api/admin/add-category", { 
+        name: categoryName.trim() 
+      }, {
+        headers: {
+          'x-session-id': sessionId
+        }
+      });
+      
+      if (response.status === 200) {
         NormalToast("Category added successfully");
         setCategoryName("");
-        setDisabled(false);
-      })
-      .catch((err) => {
-        console.error(err);
+      } else {
+        NormalToast("Failed to add category", true);
+      }
+    } catch (err) {
+      console.error("Error adding category:", err);
+      if (err.response?.status === 401) {
+        NormalToast("Session expired. Please login again.", true);
+        // Redirect to login
+        window.location.href = '/admin-login';
+      } else if (err.response?.data?.message) {
+        NormalToast(err.response.data.message, true);
+      } else {
         NormalToast("Something went wrong", true);
-        setDisabled(false);
-      });
+      }
+    } finally {
+      setDisabled(false);
+    }
   };
 
   return (
     <>
       <Head>
-        <title>Zinger | Add Category</title>
+        <title>Station Bites | Add Category</title>
       </Head>
-      <div className="heightFixAdmin px-6 lg:py-28 py-24">
-        <div className="mx-auto max-w-screen-sm sm:text-base  text-sm">
-          <h2 className="lg:text-4xl sm:text-3xl text-2xl font-bold mb-6">
+      <div className="heightFixAdmin px-4 lg:py-6 sm:py-4 py-4 overflow-y-auto">
+        <div className="mx-auto max-w-screen-sm sm:text-base text-sm">
+          <h2 className="lg:text-3xl sm:text-2xl text-xl font-bold mb-4">
             Add Category
           </h2>
-          <form onSubmit={formHandler} className="flex flex-col gap-6">
+          <form onSubmit={formHandler} className="flex flex-col gap-4">
             <input
               type="text"
+              required
               placeholder="Enter category name"
-              className="bg-gray-100 py-2 border border-gray-200  px-4 rounded-md outline-none"
+              className="bg-gray-100 py-2 border border-gray-200 px-3 rounded-md outline-none"
               value={categoryName}
               onChange={(e) => setCategoryName(e.target.value)}
               disabled={disabled}
+              minLength="2"
+              maxLength="50"
             />
             <button
-              className={`button pt-2 px-10 sm:text-base text-sm ${disabled ? "opacity-50" : ""
+              className={`button py-2 px-8 sm:text-base text-sm mt-3 mb-4 ${disabled ? "opacity-50" : ""
                 }`}
               type="submit"
               disabled={disabled}
             >
-              Submit
+              {disabled ? "Adding..." : "Submit"}
             </button>
           </form>
         </div>

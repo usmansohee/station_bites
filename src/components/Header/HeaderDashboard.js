@@ -1,9 +1,18 @@
 import Image from "next/image";
-import { signOut } from "next-auth/client";
 import { useRouter } from "next/router";
 
 function HeaderDashboard() {
   const router = useRouter();
+  
+  const handleLogout = () => {
+    // Clear all admin session data
+    localStorage.removeItem("adminSession");
+    localStorage.removeItem("adminSessionId");
+    
+    // Force redirect to login page
+    window.location.href = "/admin-login";
+  };
+
   return (
     <header className="sticky top-0 inset-x-0 z-30 bg-white text-gray-900 glassmorphism px-6">
       <div className="flex items-center justify-between w-full max-w-screen-xl py-2 xl:space-x-16 lg:space-x-12  space-x-7  mx-auto">
@@ -25,7 +34,7 @@ function HeaderDashboard() {
           >
             Dashboard
           </span>
-          <span className="link" onClick={signOut}>
+          <span className="link" onClick={handleLogout}>
             Logout
           </span>
         </div>

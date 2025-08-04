@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import StorageService from "../../util/StorageService";
 import { store } from "../../app/store";
 import { hydrate } from "../../slices/cartSlice";
@@ -9,9 +9,13 @@ import { signIn, useSession } from "next-auth/client";
 import Loader from "react-loader-spinner";
 import HeaderMobile from "../Header/HeaderMobile";
 import HeaderDashboard from "../Header/HeaderDashboard";
+import { useRouter } from "next/router";
 
 function Layout({ children, admin, auth }) {
     const [session, loading] = useSession();
+    const [adminSession, setAdminSession] = useState(null);
+    const [adminLoading, setAdminLoading] = useState(true);
+    const router = useRouter();
 
     useEffect(() => {
         store.subscribe(() => {
@@ -22,6 +26,32 @@ function Layout({ children, admin, auth }) {
         store.dispatch(hydrate(cart));
     }, []);
 
+    useEffect(() => {
+        if (admin) {
+            // Check for admin session
+            const storedSession = localStorage.getItem("adminSession");
+            if (storedSession) {
+                try {
+                    const sessionData = JSON.parse(storedSession);
+                    if (new Date(sessionData.expires) > new Date()) {
+                        setAdminSession(sessionData);
+                    } else {
+                        localStorage.removeItem("adminSession");
+                        localStorage.removeItem("adminSessionId");
+                        router.push("/admin-login");
+                    }
+                } catch (err) {
+                    localStorage.removeItem("adminSession");
+                    localStorage.removeItem("adminSessionId");
+                    router.push("/admin-login");
+                }
+            } else {
+                router.push("/admin-login");
+            }
+            setAdminLoading(false);
+        }
+    }, [admin, router]);
+
     return (
         <>
             <Head>
@@ -31,10 +61,10 @@ function Layout({ children, admin, auth }) {
                     name="viewport"
                     content="width=device-width,initial-scale=1.0,minimum-scale=1.0"
                 />
-                <title>Zinger</title>
+                <title>Station Bites</title>
                 <meta
                     name="description"
-                    content="Food ordering website for Zinger restaurant build with 💗 🔥 by Piyush Sati"
+                    content="Food ordering website for Station Bites restaurant"
                 />
                 <link
                     rel="apple-touch-icon"
@@ -68,19 +98,24 @@ function Layout({ children, admin, auth }) {
                 <meta name="theme-color" content="#ffffff" />
             </Head>
             <div className="layout">
-                {loading ? (
+                {loading || (admin && adminLoading) ? (
                     <div className="fixed inset-0 flex items-center justify-center bg-white z-50 loader">
                         <Loader type="TailSpin" color="#ab3c2a" />
                     </div>
                 ) : admin ? (
-                    session && session?.admin ? (
+                    adminSession ? (
                         <>
                             <HeaderDashboard />
                             {children}
                             <Footer admin />
                         </>
                     ) : (
-                        signIn()
+                        <div className="fixed inset-0 flex items-center justify-center bg-white z-50">
+                            <div className="text-center">
+                                <Loader type="TailSpin" color="#ab3c2a" />
+                                <p className="mt-4">Redirecting to admin login...</p>
+                            </div>
+                        </div>
                     )
                 ) : auth ? (
                     session ? (

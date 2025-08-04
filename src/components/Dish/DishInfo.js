@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Currency from "react-currency-formatter";
+import { formatCurrency } from "../../util/currencyFormatter";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import axios from "axios";
@@ -36,22 +36,22 @@ function DishInfo({
 
   return (
     <div
-      className={`flex sm:flex-row flex-col-reverse w-full my-4 text-sm text-gray-700 py-6 ${border ? "border-b border-gray-200" : ""
-        } sm:justify-between gap-6`}
+      className={`flex sm:flex-row flex-col-reverse w-full my-1 text-sm text-gray-700 py-2 ${border ? "border-b border-gray-200" : ""
+        } sm:justify-between gap-3`}
     >
-      <div className="space-y-2">
+      <div className="space-y-1">
         <div className="font-semibold text-base capitalize">{title}</div>
         <div className="text-primary-light capitalize">{category}</div>
         <p className="text-gray-500 lg:text-sm text-xs">{description}</p>
         <div>
           <p className="font-semibold">
             <span className="font-normal">Price - </span>
-            <Currency quantity={price} currency="INR" />
+            {formatCurrency(price)}
           </p>
         </div>
-        <div className="flex items-center gap-4 pt-4">
+        <div className="flex items-center gap-3 pt-1">
           <button
-            className={`button py-2 xxs:px-10 px-8 ${disabled ? "opacity-50" : ""
+            className={`button py-1 xxs:px-6 px-4 ${disabled ? "opacity-50" : ""
               }`}
             onClick={() => router.push(`/admin/update-dish/${_id}`)}
             disabled={disabled}
@@ -59,7 +59,7 @@ function DishInfo({
             Update
           </button>
           <button
-            className={`button-red py-2 xxs:px-10 px-8 ${disabled ? "opacity-50" : ""
+            className={`button-red py-1 xxs:px-6 px-4 ${disabled ? "opacity-50" : ""
               }`}
             onClick={() => deleteDish(_id)}
             disabled={disabled}
@@ -68,11 +68,11 @@ function DishInfo({
           </button>
         </div>
       </div>
-      <div className="sm:mx-0 sm:ml-6 min-w-max  mx-auto my-auto">
+      <div className="sm:mx-0 sm:ml-3 min-w-max mx-auto my-auto">
         <Image
           src={image}
-          width={120}
-          height={120}
+          width={80}
+          height={80}
           alt=""
           objectFit="contain"
         />

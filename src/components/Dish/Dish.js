@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Currency from "react-currency-formatter";
+import { formatCurrency } from "../../util/currencyFormatter";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../slices/cartSlice";
 import Fade from "react-reveal/Fade";
@@ -44,7 +44,7 @@ function Dish({ _id, title, price, description, category, image }) {
           {description}
         </p>
         <div className="mb-5 mt-2 font-bold text-gray-700">
-          <Currency quantity={price} currency="INR" />
+          {formatCurrency(price)}
         </div>
         <button
           className="mt-auto button flex items-center justify-center"

@@ -1,0 +1,13 @@
+{
+  "/_app": "pages/_app.js",
+  "/_error": "pages/_error.js",
+  "/_document": "pages/_document.js",
+  "/admin/add-category": "pages/admin/add-category.js",
+  "/404": "pages/404.js",
+  "/api/auth/[...nextauth]": "pages/api/auth/[...nextauth].js",
+  "/api/admin/add-category": "pages/api/admin/add-category.js",
+  "/admin-login": "pages/admin-login.js",
+  "/api/auth/admin-login": "pages/api/auth/admin-login.js",
+  "/admin": "pages/admin.js",
+  "/admin/dashboard": "pages/admin/dashboard.js"
+}

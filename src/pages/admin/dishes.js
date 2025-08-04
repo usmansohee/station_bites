@@ -45,23 +45,25 @@ function Dishes(props) {
   return (
     <>
       <Head>
-        <title>Zinger | Dishes</title>
+        <title>Station Bites | Dishes</title>
       </Head>
-      <div className="heightFixAdmin px-6 lg:py-20 sm:py-16 py-12">
+      <div className="heightFixAdmin px-6 lg:py-4 sm:py-3 py-2 pb-40 pt-16">
         <div className="mx-auto max-w-screen-xl">
-          <h2 className="lg:text-4xl sm:text-3xl text-2xl  font-bold mb-6 ">
-            Dishes
-          </h2>
-          <div className="py-2">
-            <input
-              className="p-2 pl-6 h-full w-full outline-none cursor-pointer sm:text-base text-sm rounded-lg bg-gray-200"
-              type="text"
-              value={searchTerm}
-              placeholder="Search a dish"
-              onChange={searchDish}
-            />
+          <div className="sticky top-16 bg-white z-10 pb-3">
+            <h2 className="lg:text-2xl sm:text-xl text-lg font-bold mb-3">
+              Dishes
+            </h2>
+            <div className="py-1">
+              <input
+                className="p-2 pl-6 h-full w-full outline-none cursor-pointer sm:text-base text-sm rounded-lg bg-gray-200"
+                type="text"
+                value={searchTerm}
+                placeholder="Search a dish"
+                onChange={searchDish}
+              />
+            </div>
           </div>
-          <div className="overflow-y-auto hideScrollBar h-96 p-1">
+          <div className="overflow-y-auto hideScrollBar h-full p-1">
             {(searchTerm ? searchResult : dishes)?.map(
               ({ _id, title, price, description, category, image }, i) => (
                 <DishInfo

@@ -7,54 +7,36 @@ function About() {
   return (
     <>
       <Head>
-        <title>Zinger | About</title>
+        <title>Station Bites | About</title>
       </Head>
       <div className="heightFix px-6">
         <div className="max-w-screen-xl mx-auto md:py-20 py-12 pb-20">
-          <div className="xl:text-lg text-base   font-medium">
+          <div className="xl:text-lg text-base font-medium">
             <h3 className="sm:text-2xl text-xl font-semibold border-b-2 border-gray-200 pb-4 text-gray-700">
-              About
+              About Station Bites
             </h3>
             <div className="flex md:gap-8 md:flex-row flex-col w-full items-center">
-              <div className="mx-auto md:w-3/4 md:max-w-lg  max-w-xs">
+              <div className="mx-auto md:w-3/4 md:max-w-lg max-w-xs">
                 <Image
-                  src="/img/programming.svg"
+                  src="/img/eating_together.svg"
                   width={400}
                   height={400}
-                  alt=""
+                  alt="Station Bites Food"
                   objectFit="contain"
                 />
               </div>
-              <div className="flex-grow ml-auto ">
+              <div className="flex-grow ml-auto">
                 <Fade bottom>
-                  <p>
-                    This is a food ordering website for Zinger restaurant built
-                    using
-                    <span className="link text-primary-light underline mx-1">
-                      <Link href="https://nextjs.org/"> Next.js,</Link>
-                    </span>
-                    <span className="link text-primary-light underline mx-1">
-                      <Link href="https://redux-toolkit.js.org/"> Redux,</Link>
-                    </span>
-                    <span className="link text-primary-light underline mx-1">
-                      <Link href="https://tailwindcss.com"> Tailwindcss,</Link>
-                    </span>
-                    <span className="link text-primary-light underline mx-1">
-                      <Link href="https://cloud.mongodb.com/"> MongoDB </Link>
-                    </span>
-                    by
-                    <span className="font-semibold text-primary-light underline mx-1">
-                      <Link href="https://itspiyushsati.vercel.app">
-                        Piyush Sati
-                      </Link>
-                    </span>
-                    to enhance and showcase his development skills.
+                  <p className="mb-4">
+                    Welcome to <strong>Station Bites</strong>, your go-to destination for delicious fast food and quick bites. 
+                    We serve fresh, quality food with a focus on taste and convenience.
                   </p>
-                  <p className="mt-2">
-                    If you wanna get in touch email
-                    <span className="link text-primary-light mx-1">
-                      piyushsati311999@gmail.com
-                    </span>
+                  <p className="mb-4">
+                    Our menu features crispy chicken dishes, savory soups, delectable cakes, and refreshing juices - 
+                    all prepared with care using the finest ingredients.
+                  </p>
+                  <p className="mt-6">
+                    Contact us: <span className="link text-primary-light">stationbites227@gmail.com</span>
                   </p>
                 </Fade>
               </div>
