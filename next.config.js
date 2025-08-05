@@ -10,11 +10,17 @@ module.exports = withPWA({
   env: {
     stripe_public_key: process.env.STRIPE_PUBLIC_KEY,
   },
-  // Configure images
+  // Configure images for production
   images: {
     unoptimized: true,
-    domains: ['localhost'],
+    domains: ['localhost', 'station-bites.vercel.app'],
     remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'station-bites.vercel.app',
+        port: '',
+        pathname: '/uploads/**',
+      },
       {
         protocol: 'http',
         hostname: 'localhost',
@@ -32,4 +38,8 @@ module.exports = withPWA({
       },
     ];
   },
+  // Add trailing slash for better compatibility
+  trailingSlash: false,
+  // Enable static exports if needed
+  output: 'standalone',
 });
