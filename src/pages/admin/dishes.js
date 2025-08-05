@@ -89,14 +89,22 @@ function Dishes(props) {
 Dishes.admin = true;
 export default Dishes;
 
-export const getStaticProps = async () => {
-  const { db } = await connectToDatabase();
-  let dishes = await db.collection("dishes").find({}).toArray();
-  dishes = JSON.parse(JSON.stringify(dishes));
-  return {
-    props: {
-      dishes,
-    },
-    revalidate: 1,
-  };
+export const getServerSideProps = async () => {
+  try {
+    const { db } = await connectToDatabase();
+    let dishes = await db.collection("dishes").find({}).toArray();
+    dishes = JSON.parse(JSON.stringify(dishes));
+    return {
+      props: {
+        dishes,
+      },
+    };
+  } catch (error) {
+    console.error('Database connection error:', error);
+    return {
+      props: {
+        dishes: [],
+      },
+    };
+  }
 };

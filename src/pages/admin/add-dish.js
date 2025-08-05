@@ -276,14 +276,22 @@ function AddDish(props) {
 AddDish.admin = true;
 export default AddDish;
 
-export const getStaticProps = async () => {
-  const { db } = await connectToDatabase();
-  let categories = await db.collection("categories").find({}).toArray();
-  categories = JSON.parse(JSON.stringify(categories));
-  return {
-    props: {
-      categories,
-    },
-    revalidate: 1,
-  };
+export const getServerSideProps = async () => {
+  try {
+    const { db } = await connectToDatabase();
+    let categories = await db.collection("categories").find({}).toArray();
+    categories = JSON.parse(JSON.stringify(categories));
+    return {
+      props: {
+        categories,
+      },
+    };
+  } catch (error) {
+    console.error('Database connection error:', error);
+    return {
+      props: {
+        categories: [],
+      },
+    };
+  }
 };

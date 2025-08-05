@@ -33,18 +33,27 @@ export default function Home(props) {
   );
 }
 
-export const getStaticProps = async () => {
-  const { db } = await connectToDatabase();
-  let dishes = await db.collection("dishes").find({}).toArray();
-  dishes = JSON.parse(JSON.stringify(dishes));
-  let categories = await db.collection("categories").find({}).toArray();
-  categories = JSON.parse(JSON.stringify(categories));
+export const getServerSideProps = async () => {
+  try {
+    const { db } = await connectToDatabase();
+    let dishes = await db.collection("dishes").find({}).toArray();
+    dishes = JSON.parse(JSON.stringify(dishes));
+    let categories = await db.collection("categories").find({}).toArray();
+    categories = JSON.parse(JSON.stringify(categories));
 
-  return {
-    props: {
-      dishes,
-      categories,
-    },
-    revalidate: 1,
-  };
+    return {
+      props: {
+        dishes,
+        categories,
+      },
+    };
+  } catch (error) {
+    console.error('Database connection error:', error);
+    return {
+      props: {
+        dishes: [],
+        categories: [],
+      },
+    };
+  }
 };
