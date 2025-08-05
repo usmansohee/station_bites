@@ -39,6 +39,14 @@ export async function connectToDatabase() {
       serverSelectionTimeoutMS: 5000,
       socketTimeoutMS: 45000,
       bufferMaxEntries: 0,
+      // Fix SSL/TLS issues
+      ssl: true,
+      sslValidate: true,
+      tls: true,
+      tlsAllowInvalidCertificates: false,
+      tlsAllowInvalidHostnames: false,
+      // Force TLS 1.2+
+      tlsInsecure: false,
     };
 
     cached.promise = MongoClient.connect(MONGODB_URI, opts).then((client) => {
