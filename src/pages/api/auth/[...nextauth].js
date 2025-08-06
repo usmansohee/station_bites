@@ -11,19 +11,11 @@ export default NextAuth({
   ],
   
   pages: {
-    signIn: undefined, // Use default NextAuth sign-in page
+    signIn: '/auth/signin', // Custom beautiful sign-in page
     error: '/auth/error', // Custom error page (optional)
   },
 
-  callbacks: {
-    async session({ session, token }) {
-      // Simple session callback - just add admin property
-      if (session && session.user) {
-        session.admin = false; // Default to false for regular users
-      }
-      return session;
-    },
-  },
+  // No callbacks needed - keep client sessions simple
   
   secret: process.env.NEXTAUTH_SECRET || "your-secret-key",
   

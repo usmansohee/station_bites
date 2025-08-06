@@ -19,11 +19,11 @@ function Profile() {
             <Fade top>
               <img
                 src={session?.user?.image || "/img/profile_pic.svg"}
-                loading="lazy"
-                alt=""
-                width="80"
-                height="80"
-                className="object-contain sm:w-24 sm:h-24 w-20 h-20 rounded-full hover:shadow-md"
+                alt="User Profile Picture"
+                className="object-cover sm:w-24 sm:h-24 w-20 h-20 rounded-full hover:shadow-md"
+                onError={(e) => {
+                  e.target.src = "/img/profile_pic.svg";
+                }}
               />
               <p>
                 <span className="font-medium sm:text-lg text-base mr-1">

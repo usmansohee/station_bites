@@ -44,10 +44,11 @@ function Header() {
                   <img
                     src={session?.user?.image || "/img/profile_pic.svg"}
                     loading="lazy"
-                    alt=""
-                    width="24"
-                    height="24"
-                    className="object-contain w-10 h-10 rounded-full mr-1 hover:shadow-md"
+                    alt="User Profile"
+                    className="object-cover w-10 h-10 rounded-full mr-1 hover:shadow-md"
+                    onError={(e) => {
+                      e.target.src = "/img/profile_pic.svg";
+                    }}
                   />
                   <ChevronDownIcon className="lg:w-6 w-4" />
                 </span>

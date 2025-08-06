@@ -44,11 +44,12 @@ function SideBarMenu({ closeSideBar }) {
             <img
               src={session?.user?.image || "/img/profile_pic.svg"}
               loading="lazy"
-              alt=""
-              width="24"
-              height="24"
-              className="object-contain w-10 h-10 rounded-full mr-1 hover:shadow-md"
+              alt="User Profile"
+              className="object-cover w-10 h-10 rounded-full mr-1 hover:shadow-md cursor-pointer"
               onClick={() => sideBarClickHandler("/profile")}
+              onError={(e) => {
+                e.target.src = "/img/profile_pic.svg";
+              }}
             />
           ) : (
             <span className="link text-primary-light text-lg" onClick={signIn}>
