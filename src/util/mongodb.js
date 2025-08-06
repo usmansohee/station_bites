@@ -1,4 +1,4 @@
-import { MongoClient } from "mongodb";
+import { MongoClient, ServerApiVersion } from "mongodb";
 
 /**
  * Global is used here to maintain a cached connection across hot reloads
@@ -12,8 +12,8 @@ if (!cached) {
 }
 
 export async function connectToDatabase() {
-  // Use the original working cluster from your env debug
-  const MONGODB_URI = "mongodb+srv://stationbites227:4Hqr0yaRciDkItjv@ac-2hozgzm-shard-00-01.g6qtkwl.mongodb.net/stationbites227";
+  // Official MongoDB Atlas connection string with Stable API
+  const MONGODB_URI = "mongodb+srv://stationbites227:4Hqr0yaRciDkItjv@cluster0.g6qtkwl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
   
   // Set database name for production
   const MONGODB_DB = "stationbites227";
@@ -49,7 +49,13 @@ export async function connectToDatabase() {
 
   if (!cached.promise) {
     const opts = {
-      // Minimal options for Vercel serverless - NO deprecated options
+      // Official MongoDB Stable API configuration
+      serverApi: {
+        version: ServerApiVersion.v1,
+        strict: true,
+        deprecationErrors: true,
+      },
+      // Minimal options for Vercel serverless
       maxPoolSize: 1,
       serverSelectionTimeoutMS: 5000,
       socketTimeoutMS: 30000,
