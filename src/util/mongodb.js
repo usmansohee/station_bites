@@ -35,21 +35,21 @@ export async function connectToDatabase() {
     const opts = {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      maxPoolSize: 10,
-      serverSelectionTimeoutMS: 5000,
+      // Optimized for Vercel serverless functions
+      maxPoolSize: 1,
+      serverSelectionTimeoutMS: 10000,
       socketTimeoutMS: 45000,
+      connectTimeoutMS: 10000,
       bufferMaxEntries: 0,
-      // Fix SSL/TLS issues
+      // Reduce connection overhead for serverless
+      maxIdleTimeMS: 30000,
+      // SSL/TLS configuration for Atlas
       ssl: true,
       sslValidate: true,
-      tls: true,
-      tlsAllowInvalidCertificates: false,
-      tlsAllowInvalidHostnames: false,
-      // Force TLS 1.2+
-      tlsInsecure: false,
     };
 
     cached.promise = MongoClient.connect(MONGODB_URI, opts).then((client) => {
+      console.log('MongoDB connected successfully');
       return {
         client,
         db: client.db(MONGODB_DB),
@@ -61,6 +61,7 @@ export async function connectToDatabase() {
     cached.conn = await cached.promise;
     return cached.conn;
   } catch (error) {
+    console.error('MongoDB connection error:', error.message);
     cached.promise = null;
     throw error;
   }
