@@ -52,7 +52,12 @@ function Dish({ _id, title, price, description, category, image }) {
             className="w-full h-48 object-cover rounded"
             onError={(e) => {
               console.error("Image failed to load:", processedImageUrl);
+              console.error("Original image path:", image);
+              console.error("Error details:", e);
               e.target.style.display = 'none';
+            }}
+            onLoad={() => {
+              console.log("Image loaded successfully:", processedImageUrl);
             }}
           />
           {!processedImageUrl && (

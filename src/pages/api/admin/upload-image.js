@@ -63,36 +63,56 @@ export default async function handler(req, res) {
       try {
         const buffer = Buffer.concat(chunks);
         
-        // Parse multipart form data manually
+        // Parse multipart form data manually - handle binary data properly
         const boundary = req.headers['content-type'].split('boundary=')[1];
-        const parts = buffer.toString().split(`--${boundary}`);
+        const boundaryBuffer = Buffer.from(`--${boundary}`);
+        
+        // Split buffer by boundary (keeping binary data intact)
+        let parts = [];
+        let start = 0;
+        let end = buffer.indexOf(boundaryBuffer, start);
+        
+        while (end !== -1) {
+          if (start !== end) {
+            parts.push(buffer.slice(start, end));
+          }
+          start = end + boundaryBuffer.length;
+          end = buffer.indexOf(boundaryBuffer, start);
+        }
+        
+        // Add final part if exists
+        if (start < buffer.length) {
+          parts.push(buffer.slice(start));
+        }
         
         let fileData = null;
         let fileName = null;
         
         for (const part of parts) {
-          if (part.includes('Content-Disposition: form-data')) {
-            const lines = part.split('\r\n');
-            for (let i = 0; i < lines.length; i++) {
-              if (lines[i].includes('name="image"')) {
-                // This is our file part
-                const contentType = lines.find(line => line.startsWith('Content-Type:'));
-                if (contentType) {
-                  // Extract file data
-                  const dataStart = part.indexOf('\r\n\r\n') + 4;
-                  const dataEnd = part.lastIndexOf('\r\n');
-                  if (dataStart < dataEnd) {
-                    fileData = Buffer.from(part.substring(dataStart, dataEnd));
-                    
-                    // Extract filename
-                    const filenameMatch = lines.find(line => line.includes('filename='));
-                    if (filenameMatch) {
-                      fileName = filenameMatch.split('filename=')[1].replace(/"/g, '');
-                    }
-                    break;
-                  }
-                }
+          const partStr = part.toString('utf8', 0, Math.min(500, part.length)); // Only convert header to string
+          if (partStr.includes('Content-Disposition: form-data') && partStr.includes('name="image"')) {
+            // Find the double CRLF that separates headers from data
+            const headerEnd = part.indexOf(Buffer.from('\r\n\r\n'));
+            if (headerEnd !== -1) {
+              const headers = part.slice(0, headerEnd).toString('utf8');
+              
+              // Extract filename from headers
+              const filenameMatch = headers.match(/filename="([^"]+)"/);
+              if (filenameMatch) {
+                fileName = filenameMatch[1];
               }
+              
+              // Extract binary file data (skip the double CRLF)
+              const dataStart = headerEnd + 4;
+              let dataEnd = part.length;
+              
+              // Remove trailing CRLF if present
+              if (part[dataEnd - 2] === 0x0D && part[dataEnd - 1] === 0x0A) {
+                dataEnd -= 2;
+              }
+              
+              fileData = part.slice(dataStart, dataEnd);
+              break;
             }
           }
         }
