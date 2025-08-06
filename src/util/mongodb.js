@@ -16,16 +16,31 @@ export async function connectToDatabase() {
   const MONGODB_URI = process.env.MONGODB_URI;
   const MONGODB_DB = process.env.MONGODB_DB;
 
+  console.log('Environment check:', {
+    MONGODB_URI: MONGODB_URI ? 'SET' : 'MISSING',
+    MONGODB_DB: MONGODB_DB ? 'SET' : 'MISSING',
+    NODE_ENV: process.env.NODE_ENV,
+    ALL_ENV_KEYS: Object.keys(process.env).filter(key => key.includes('MONGO')),
+  });
+
   if (!MONGODB_URI) {
+    console.error('MONGODB_URI is missing from environment variables');
     throw new Error(
-      "Please define the MONGODB_URI environment variable in Vercel dashboard"
+      "MONGODB_URI environment variable is missing. Please check Vercel dashboard."
     );
   }
 
   if (!MONGODB_DB) {
+    console.error('MONGODB_DB is missing from environment variables');
     throw new Error(
-      "Please define the MONGODB_DB environment variable in Vercel dashboard"
+      "MONGODB_DB environment variable is missing. Please check Vercel dashboard."
     );
+  }
+
+  // Validate URI format
+  if (!MONGODB_URI.startsWith('mongodb://') && !MONGODB_URI.startsWith('mongodb+srv://')) {
+    console.error('Invalid MongoDB URI format:', MONGODB_URI.substring(0, 20) + '...');
+    throw new Error('Invalid MongoDB URI format');
   }
 
   if (cached.conn) {
