@@ -16,7 +16,6 @@ module.exports = withPWA({
       {
         protocol: 'https',
         hostname: 'station-bites.vercel.app',
-        port: '',
         pathname: '/uploads/**',
       },
       {
