@@ -46,7 +46,7 @@ function Cart() {
   return (
     <>
       <Head>
-        <title>Station Bite | Cart</title>
+        <title>3 in 1 Tandoori Chicken | Cart</title>
       </Head>
       <div className="bg-gray-100 py-10 md:px-6 heightFix">
         <main className="max-w-screen-xl mx-auto">

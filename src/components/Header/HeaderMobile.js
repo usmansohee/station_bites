@@ -22,7 +22,7 @@ function HeaderMobile() {
             </div>
             <Image
               src="/img/station-bite-logo.svg"
-              alt="Station Bite"
+              alt="3 in 1 Tandoori Chicken"
               className="cursor-pointer"
               width={120}
               objectFit="contain"

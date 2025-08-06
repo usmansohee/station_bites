@@ -7,7 +7,7 @@ function orderDetails() {
   return (
     <>
       <Head>
-        <title>Station Bite | OrderDetails</title>
+        <title>3 in 1 Tandoori Chicken | OrderDetails</title>
       </Head>
       <OrderDetails id={router.query?.id} admin />
     </>

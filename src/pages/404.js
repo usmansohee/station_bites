@@ -6,7 +6,7 @@ export default function Custom404() {
   return (
     <>
       <Head>
-        <title>Station Bite | Page Not Found</title>
+        <title>3 in 1 Tandoori Chicken | Page Not Found</title>
       </Head>
 
       <div className="heightFix flex items-center justify-center text-center ">

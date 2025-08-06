@@ -18,7 +18,7 @@ function Orders() {
   return (
     <>
       <Head>
-        <title>Station Bite | Orders</title>
+        <title>3 in 1 Tandoori Chicken | Orders</title>
       </Head>
       <div className=" heightFix px-6">
         <main className="max-w-screen-xl mx-auto md:py-20 py-12 pb-20">

@@ -21,7 +21,7 @@ function Header() {
         <div className="flex items-center flex-1">
           <Image
             src="/img/station-bite-logo.svg"
-            alt="Station Bite"
+            alt="3 in 1 Tandoori Chicken"
             className="cursor-pointer"
             width={140}
             objectFit="contain"
