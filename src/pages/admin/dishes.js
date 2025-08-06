@@ -45,7 +45,7 @@ function Dishes(props) {
   return (
     <>
       <Head>
-        <title>Station Bites | Dishes</title>
+        <title>3 in 1 Tandoori Chicken | Dishes</title>
       </Head>
       <div className="heightFixAdmin px-6 lg:py-4 sm:py-3 py-2 pb-40 pt-16">
         <div className="mx-auto max-w-screen-xl">

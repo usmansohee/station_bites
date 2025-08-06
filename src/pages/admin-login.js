@@ -43,7 +43,7 @@ export default function AdminLogin() {
   return (
     <>
       <Head>
-        <title>Admin Login | Station Bites</title>
+        <title>Admin Login | 3 in 1 Tandoori Chicken</title>
       </Head>
       <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full">

@@ -22,7 +22,7 @@ function Footer({ admin }) {
             <span>ML7 4AW, 227 Station Road, Shottos</span>
           </div>
           <div className="text-gray-400 text-xs">
-            © 2025 Station Bites. All rights reserved.
+            © 2025 3 in 1 Tandoori Chicken. All rights reserved.
           </div>
         </div>
       </div>

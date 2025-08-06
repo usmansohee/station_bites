@@ -74,7 +74,7 @@ function Dashboard() {
   return (
     <>
       <Head>
-        <title>Station Bites | Dashboard</title>
+        <title>3 in 1 Tandoori Chicken | Dashboard</title>
       </Head>
       <div className="heightFixAdmin bg-gray-100 py-4 md:px-6">
         <div className="max-w-screen-xl mx-auto bg-white shadow rounded-md my-3">

@@ -26,7 +26,7 @@ function Info() {
                     <div>
                         <PhoneIcon className="lg:w-12 w-10 text-primary-light mx-auto" />
                     </div>
-                    <h3 className="font-semibold">[phone number]</h3>
+                    <h3 className="font-semibold">07367349422</h3>
                     <h4>Call Now</h4>
                 </div>
             </div>
