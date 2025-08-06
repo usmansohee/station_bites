@@ -13,8 +13,8 @@ if (!cached) {
 
 export async function connectToDatabase() {
   // Validate environment variables at runtime, not at module load
-  // Use MONGODB_URI first, fallback to MONGO_URI if needed
-  const MONGODB_URI = process.env.MONGODB_URI || process.env.MONGO_URI;
+  // Only use MONGODB_URI to avoid conflicts
+  const MONGODB_URI = process.env.MONGODB_URI;
   
   // Extract database name from URI if MONGODB_DB is not provided
   let MONGODB_DB = process.env.MONGODB_DB;
@@ -43,11 +43,25 @@ export async function connectToDatabase() {
     );
   }
 
-  // Validate URI format
+  // Validate URI format and content
   if (!MONGODB_URI.startsWith('mongodb://') && !MONGODB_URI.startsWith('mongodb+srv://')) {
     console.error('Invalid MongoDB URI format:', MONGODB_URI.substring(0, 20) + '...');
     throw new Error('Invalid MongoDB URI format');
   }
+
+  // Additional validation - check for common URI issues
+  if (MONGODB_URI.includes('undefined') || MONGODB_URI.includes('null')) {
+    console.error('MongoDB URI contains undefined/null values');
+    throw new Error('MongoDB URI contains invalid values');
+  }
+
+  // Log the URI structure for debugging (first 50 chars)
+  console.log('MongoDB URI structure check:', {
+    starts_with: MONGODB_URI.substring(0, 15),
+    has_at_symbol: MONGODB_URI.includes('@'),
+    has_slash_after_net: MONGODB_URI.includes('.net/'),
+    length: MONGODB_URI.length
+  });
 
   if (!MONGODB_DB) {
     console.error('Database name could not be determined from URI or MONGODB_DB env var');
