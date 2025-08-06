@@ -1,6 +1,40 @@
-<svg width="120" height="40" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <text x="10" y="28" font-family="Poppins, sans-serif" font-size="18" font-weight="bold" fill="#ab3c2a">Station</text>
-  <text x="10" y="40" font-family="Poppins, sans-serif" font-size="18" font-weight="bold" fill="#792a1e">Bite</text>
-  <circle cx="95" cy="20" r="8" fill="#ab3c2a"/>
-  <circle cx="95" cy="20" r="4" fill="white"/>
-</svg> 
+<svg width="200" height="60" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="fireGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF6B35;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#F7931E;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#DC143C;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#8B4513;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#CD853F;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle representing tandoor oven -->
+  <circle cx="30" cy="30" r="25" fill="url(#fireGradient)" stroke="#8B4513" stroke-width="2"/>
+  
+  <!-- Tandoor flame pattern -->
+  <path d="M20 35 Q25 25 30 35 Q35 25 40 35" stroke="#FFD700" stroke-width="2" fill="none"/>
+  <path d="M22 30 Q27 22 32 30 Q37 22 42 30" stroke="#FF4500" stroke-width="1.5" fill="none"/>
+  
+  <!-- Chicken drumstick silhouette -->
+  <path d="M25 40 Q28 38 30 40 Q32 42 30 44 Q28 42 25 40 Z" fill="#8B4513"/>
+  <ellipse cx="30" cy="25" rx="8" ry="12" fill="#CD853F" transform="rotate(-15 30 25)"/>
+  
+  <!-- "3 in 1" text -->
+  <text x="65" y="20" font-family="Arial Black, sans-serif" font-size="16" font-weight="bold" fill="url(#textGradient)">3 in 1</text>
+  
+  <!-- "TANDOORI" text -->
+  <text x="65" y="35" font-family="Arial Black, sans-serif" font-size="12" font-weight="bold" fill="#DC143C">TANDOORI</text>
+  
+  <!-- "CHICKEN" text -->
+  <text x="65" y="48" font-family="Arial Black, sans-serif" font-size="12" font-weight="bold" fill="#8B4513">CHICKEN</text>
+  
+  <!-- Decorative spice dots -->
+  <circle cx="160" cy="15" r="2" fill="#FF6B35"/>
+  <circle cx="170" cy="20" r="1.5" fill="#F7931E"/>
+  <circle cx="180" cy="25" r="2" fill="#DC143C"/>
+  <circle cx="160" cy="40" r="1.5" fill="#8B4513"/>
+  <circle cx="175" cy="45" r="2" fill="#CD853F"/>
+</svg>
