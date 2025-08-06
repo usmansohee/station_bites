@@ -12,8 +12,8 @@ if (!cached) {
 }
 
 export async function connectToDatabase() {
-  // Hardcoded production connection string (clean MongoDB Atlas format)
-  const MONGODB_URI = "mongodb+srv://stationbites227:4Hqr0yaRciDkItjv@cluster0.g6qtkwl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+  // Hardcoded production connection string (minimal format)
+  const MONGODB_URI = "mongodb+srv://stationbites227:4Hqr0yaRciDkItjv@cluster0.g6qtkwl.mongodb.net/stationbites227";
   
   // Fallback to env var if needed
   const ENV_URI = process.env.MONGODB_URI;
@@ -68,17 +68,11 @@ export async function connectToDatabase() {
 
   if (!cached.promise) {
     const opts = {
-      // Optimized for Vercel serverless functions
+      // Minimal options for Vercel serverless
       maxPoolSize: 1,
-      serverSelectionTimeoutMS: 10000,
-      socketTimeoutMS: 45000,
-      connectTimeoutMS: 10000,
-      // Reduce connection overhead for serverless
-      maxIdleTimeMS: 30000,
-      // SSL/TLS configuration for Atlas
-      tls: true,
-      tlsAllowInvalidCertificates: false,
-      tlsAllowInvalidHostnames: false,
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 30000,
+      connectTimeoutMS: 5000,
     };
 
     cached.promise = MongoClient.connect(MONGODB_URI, opts).then((client) => {
