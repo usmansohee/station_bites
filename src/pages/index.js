@@ -33,7 +33,7 @@ export default function Home(props) {
   );
 }
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async () => {
   try {
     const { db } = await connectToDatabase();
     let dishes = await db.collection("dishes").find({}).toArray();
@@ -46,8 +46,6 @@ export const getStaticProps = async () => {
         dishes,
         categories,
       },
-      // Regenerate the page at most once every 60 seconds
-      revalidate: 60,
     };
   } catch (error) {
     console.error('Database connection error:', error);
@@ -56,8 +54,6 @@ export const getStaticProps = async () => {
         dishes: [],
         categories: [],
       },
-      // Retry after 30 seconds if there's an error
-      revalidate: 30,
     };
   }
 };
