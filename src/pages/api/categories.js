@@ -66,7 +66,9 @@ export default async (req, res) => {
         
         return res.status(500).json({ 
             message: "Internal Server Error",
-            error: process.env.NODE_ENV === 'development' ? err.message : "Something went wrong",
+            error: err.message, // Show actual error message for debugging
+            errorName: err.name,
+            errorCode: err.code,
             timestamp: new Date().toISOString()
         });
     }

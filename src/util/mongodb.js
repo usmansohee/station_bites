@@ -60,7 +60,7 @@ export async function connectToDatabase() {
     };
 
     cached.promise = MongoClient.connect(MONGODB_URI, opts).then((client) => {
-      console.log('MongoDB connected successfully');
+      console.log('MongoDB connected successfully!',"MONGODB_URI:",MONGODB_URI, "MONGODB_DB:",MONGODB_DB);
       return {
         client,
         db: client.db(MONGODB_DB),
@@ -72,7 +72,13 @@ export async function connectToDatabase() {
     cached.conn = await cached.promise;
     return cached.conn;
   } catch (error) {
-    console.error('MongoDB connection error:', error.message);
+    console.log("mongodb connection error",error);
+    console.error('MongoDB connection error:', {
+      message: error.message,
+      name: error.name,
+      code: error.code,
+      stack: error.stack
+    });
     cached.promise = null;
     throw error;
   }
