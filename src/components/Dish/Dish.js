@@ -22,6 +22,7 @@ function Dish({ _id, title, price, description, category, image }) {
   };
 
   const processedImageUrl = getImageUrl(image);
+  console.log(processedImageUrl);
   
   // Placeholder image for when the main image fails to load
   const placeholderImage = '/img/empty.svg';
