@@ -34,10 +34,6 @@ export default NextAuth({
     },
   },
   
-  pages: {
-    signIn: '/admin-login',
-  },
-  
   secret: process.env.NEXTAUTH_SECRET || "your-secret-key",
   
   session: {
