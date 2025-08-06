@@ -22,7 +22,7 @@ export default function handler(req, res) {
     
     // Check if file exists
     if (!fs.existsSync(filePath)) {
-      console.error(`Serve-image: File not found at ${filePath}`);
+      console.warn(`Serve-image: File not found at ${filePath} - this is normal for deleted uploaded images`);
       return res.status(404).json({ message: 'Image not found' });
     }
 

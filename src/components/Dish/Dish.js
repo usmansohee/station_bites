@@ -23,6 +23,9 @@ function Dish({ _id, title, price, description, category, image }) {
 
   const processedImageUrl = getImageUrl(image);
   
+  // Placeholder image for when the main image fails to load
+  const placeholderImage = '/img/empty.svg';
+  
   const addItemToCart = () => {
     //Sending the Dish as an action to the REDUX store... the cart slice
     dispatch(
@@ -47,24 +50,22 @@ function Dish({ _id, title, price, description, category, image }) {
         </p>
         <div className="relative">
           <img
-            src={processedImageUrl}
+            src={processedImageUrl || placeholderImage}
             alt={title}
             className="w-full h-48 object-cover rounded"
             onError={(e) => {
-              console.error("Image failed to load:", processedImageUrl);
-              console.error("Original image path:", image);
-              console.error("Error details:", e);
-              e.target.style.display = 'none';
+              console.warn("Image failed to load:", processedImageUrl);
+              console.warn("Original image path:", image);
+              console.warn("Falling back to placeholder image");
+              // Fallback to placeholder image
+              if (e.target.src !== placeholderImage) {
+                e.target.src = placeholderImage;
+              }
             }}
-            onLoad={() => {
-              console.log("Image loaded successfully:", processedImageUrl);
+            onLoad={(e) => {
+              console.log("Image loaded successfully:", e.target.src);
             }}
           />
-          {!processedImageUrl && (
-            <div className="absolute inset-0 bg-gray-200 flex items-center justify-center text-gray-500">
-              No Image
-            </div>
-          )}
         </div>
         <h4 className="my-3 font-medium capitalize">
           {title}
