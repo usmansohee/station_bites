@@ -43,9 +43,6 @@ export async function connectToDatabase() {
       bufferMaxEntries: 0,
       // Reduce connection overhead for serverless
       maxIdleTimeMS: 30000,
-      // SSL/TLS configuration for Atlas
-      ssl: true,
-      sslValidate: true,
     };
 
     cached.promise = MongoClient.connect(MONGODB_URI, opts).then((client) => {
