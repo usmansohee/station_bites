@@ -49,13 +49,20 @@ export default NextAuth({
     
     async redirect({ url, baseUrl }) {
       // Ensure redirect goes to home page after sign-in, not admin pages
-      if (url.includes('/admin') || url.includes('admin-login')) {
+      if (url && (url.includes('/admin') || url.includes('admin-login'))) {
         return baseUrl; // Redirect to home page instead
       }
+      // If no url provided, go to home
+      if (!url) return baseUrl;
       // If url is relative, allow it
       if (url.startsWith('/')) return `${baseUrl}${url}`;
       // If url is on same origin, allow it
-      if (new URL(url).origin === baseUrl) return url;
+      try {
+        if (new URL(url).origin === baseUrl) return url;
+      } catch (e) {
+        // Invalid URL, redirect to home
+        return baseUrl;
+      }
       // Otherwise redirect to home
       return baseUrl;
     },
