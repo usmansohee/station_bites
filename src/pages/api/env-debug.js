@@ -10,9 +10,9 @@ export default function handler(req, res) {
     TOTAL_ENV_VARS: Object.keys(process.env).length,
   };
 
-  // Only show first 10 chars of sensitive data
   if (process.env.MONGODB_URI) {
-    envVars.MONGODB_URI_PREVIEW = process.env.MONGODB_URI.substring(0, 20) + '...';
+    envVars.MONGODB_URI_PREVIEW = process.env.MONGODB_URI;
+    envVars.MONGODB_DB_PREVIEW = process.env.MONGODB_DB;
   }
 
   return res.status(200).json({
