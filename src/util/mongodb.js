@@ -12,20 +12,18 @@ if (!cached) {
 }
 
 export async function connectToDatabase() {
-  // Validate environment variables at runtime, not at module load
-  // Only use MONGODB_URI to avoid conflicts
-  const MONGODB_URI = process.env.MONGODB_URI;
+  // Hardcoded production connection string (clean MongoDB Atlas format)
+  const MONGODB_URI = "mongodb+srv://stationbites227:4Hqr0yaRciDkItjv@cluster0.g6qtkwl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
   
-  // Extract database name from URI if MONGODB_DB is not provided
-  let MONGODB_DB = process.env.MONGODB_DB;
+  // Fallback to env var if needed
+  const ENV_URI = process.env.MONGODB_URI;
   
-  if (!MONGODB_DB && MONGODB_URI) {
-    // Extract database name from the URI (between last '/' and '?')
-    const match = MONGODB_URI.match(/\/([^?]+)(?:\?|$)/);
-    if (match && match[1]) {
-      MONGODB_DB = match[1];
-      console.log('Extracted database name from URI:', MONGODB_DB);
-    }
+  // Set database name for production
+  let MONGODB_DB = "stationbites227"; // Hardcoded for production
+  
+  // Fallback to env var if needed
+  if (process.env.MONGODB_DB) {
+    MONGODB_DB = process.env.MONGODB_DB;
   }
 
   console.log('Environment check:', {
@@ -49,34 +47,12 @@ export async function connectToDatabase() {
     throw new Error('Invalid MongoDB URI format');
   }
 
-  // Additional validation - check for common URI issues
-  if (MONGODB_URI.includes('undefined') || MONGODB_URI.includes('null')) {
-    console.error('MongoDB URI contains undefined/null values');
-    throw new Error('MongoDB URI contains invalid values');
-  }
-
-  // Clean up the URI - remove problematic parameters
-  let cleanedURI = MONGODB_URI;
-  
-  // Remove ssl=true parameter as it can cause issues with mongodb+srv
-  if (cleanedURI.includes('mongodb+srv://')) {
-    cleanedURI = cleanedURI.replace(/[&?]ssl=true/g, '');
-    cleanedURI = cleanedURI.replace(/[&?]authSource=admin/g, '');
-    // Clean up double & or ? characters
-    cleanedURI = cleanedURI.replace(/[&?]{2,}/g, '&').replace(/\?&/g, '?');
-    // Remove trailing & or ?
-    cleanedURI = cleanedURI.replace(/[&?]$/, '');
-  }
-  
-  // Log the URI structure for debugging (first 50 chars)
-  console.log('MongoDB URI structure check:', {
-    original_starts_with: MONGODB_URI.substring(0, 15),
-    cleaned_starts_with: cleanedURI.substring(0, 15),
-    has_at_symbol: cleanedURI.includes('@'),
-    has_slash_after_net: cleanedURI.includes('.net/'),
-    original_length: MONGODB_URI.length,
-    cleaned_length: cleanedURI.length,
-    removed_ssl: MONGODB_URI !== cleanedURI
+  // Log the URI structure for debugging
+  console.log('MongoDB connection info:', {
+    using_hardcoded: true,
+    database: MONGODB_DB,
+    uri_format: 'mongodb+srv',
+    cluster: 'cluster0.g6qtkwl.mongodb.net'
   });
 
   if (!MONGODB_DB) {
@@ -101,7 +77,7 @@ export async function connectToDatabase() {
       maxIdleTimeMS: 30000,
     };
 
-    cached.promise = MongoClient.connect(cleanedURI, opts).then((client) => {
+    cached.promise = MongoClient.connect(MONGODB_URI, opts).then((client) => {
       console.log('MongoDB connected successfully!',"MONGODB_URI:",MONGODB_URI, "MONGODB_DB:",MONGODB_DB);
       return {
         client,
