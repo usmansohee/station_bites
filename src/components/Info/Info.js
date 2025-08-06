@@ -12,14 +12,15 @@ function Info() {
                     <div>
                         <ClockIcon className="lg:w-12 w-10 text-primary-light mx-auto " />
                     </div>
-                    <h3 className="font-semibold">Today 10am - 7pm</h3>
-                    <h4>Working Hours</h4>
+                    <h3 className="font-semibold">Mon - Thurs 10am - 7pm</h3>
+                    <h3 className="font-semibold">Fri - Sun 10am - 10pm</h3>
+                    {/* <h4>Working Hours</h4> */}
                 </div>
                 <div className="flex flex-col items-center gap-2">
                     <div>
                         <LocationMarkerIcon className="lg:w-12 w-10 text-primary-light mx-auto" />
                     </div>
-                    <h3 className="font-semibold">Station Road, Shotts</h3>
+                    <h3 className="font-semibold">227 Station Road, Shottos</h3>
                     <h4>Get Directions</h4>
                 </div>
                 <div className="flex flex-col items-center gap-2">
