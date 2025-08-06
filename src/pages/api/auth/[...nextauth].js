@@ -9,6 +9,11 @@ export default NextAuth({
       clientSecret: process.env.GOOGLE_SECRET,
     }),
   ],
+  
+  pages: {
+    signIn: undefined, // Use default NextAuth sign-in page
+    error: '/auth/error', // Custom error page (optional)
+  },
 
   callbacks: {
     async session({ session, token }) {
@@ -40,6 +45,19 @@ export default NextAuth({
         token.admin = user.admin;
       }
       return token;
+    },
+    
+    async redirect({ url, baseUrl }) {
+      // Ensure redirect goes to home page after sign-in, not admin pages
+      if (url.includes('/admin') || url.includes('admin-login')) {
+        return baseUrl; // Redirect to home page instead
+      }
+      // If url is relative, allow it
+      if (url.startsWith('/')) return `${baseUrl}${url}`;
+      // If url is on same origin, allow it
+      if (new URL(url).origin === baseUrl) return url;
+      // Otherwise redirect to home
+      return baseUrl;
     },
   },
   
