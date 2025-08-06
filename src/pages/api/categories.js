@@ -30,12 +30,7 @@ export default async (req, res) => {
         
         console.log(`Categories API: Found ${categories.length} categories`);
         
-        return res.status(200).json({
-            success: true,
-            data: categories,
-            count: categories.length,
-            timestamp: new Date().toISOString()
-        });
+        return res.status(200).json(categories);
     } catch (err) {
         console.error('Categories API Error:', {
             message: err.message,

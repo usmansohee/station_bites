@@ -7,9 +7,13 @@ const getCategories = (initialData) => {
     } else {
         res = useSWR("/api/categories");
     }
+    
+    // Return initialData if SWR data is not yet available and we have initial data
+    const categories = res.data || initialData || [];
+    
     return {
-        categories: res.data,
-        isLoading: !res.error && !res.data,
+        categories: Array.isArray(categories) ? categories : [],
+        isLoading: !res.error && !res.data && !initialData,
         error: res.error,
     };
 };

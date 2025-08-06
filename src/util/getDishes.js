@@ -7,9 +7,13 @@ const getDishes = (initialData) => {
     } else {
         res = useSWR("/api/dishes");
     }
+    
+    // Return initialData if SWR data is not yet available and we have initial data
+    const dishes = res.data || initialData || [];
+    
     return {
-        dishes: res.data,
-        isLoading: !res.error && !res.data,
+        dishes: Array.isArray(dishes) ? dishes : [],
+        isLoading: !res.error && !res.data && !initialData,
         error: res.error,
     };
 };

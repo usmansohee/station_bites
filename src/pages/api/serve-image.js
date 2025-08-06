@@ -9,6 +9,7 @@ export default function handler(req, res) {
   const { filename } = req.query;
 
   if (!filename) {
+    console.error('Serve-image: No filename provided');
     return res.status(400).json({ message: 'Filename is required' });
   }
 
@@ -16,8 +17,11 @@ export default function handler(req, res) {
     // Construct the file path
     const filePath = path.join(process.cwd(), 'public', 'uploads', 'dishes', filename);
     
+    console.log(`Serve-image: Attempting to serve ${filename} from ${filePath}`);
+    
     // Check if file exists
     if (!fs.existsSync(filePath)) {
+      console.error(`Serve-image: File not found at ${filePath}`);
       return res.status(404).json({ message: 'Image not found' });
     }
 
@@ -48,10 +52,12 @@ export default function handler(req, res) {
     res.setHeader('Cache-Control', 'public, max-age=31536000'); // Cache for 1 year
     res.setHeader('Access-Control-Allow-Origin', '*');
     
+    console.log(`Serve-image: Successfully serving ${filename}`);
+    
     // Send the image
     res.status(200).send(imageBuffer);
   } catch (error) {
     console.error('Error serving image:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ message: 'Internal server error', error: error.message });
   }
 } 
