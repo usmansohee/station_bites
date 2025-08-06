@@ -55,12 +55,28 @@ export async function connectToDatabase() {
     throw new Error('MongoDB URI contains invalid values');
   }
 
+  // Clean up the URI - remove problematic parameters
+  let cleanedURI = MONGODB_URI;
+  
+  // Remove ssl=true parameter as it can cause issues with mongodb+srv
+  if (cleanedURI.includes('mongodb+srv://')) {
+    cleanedURI = cleanedURI.replace(/[&?]ssl=true/g, '');
+    cleanedURI = cleanedURI.replace(/[&?]authSource=admin/g, '');
+    // Clean up double & or ? characters
+    cleanedURI = cleanedURI.replace(/[&?]{2,}/g, '&').replace(/\?&/g, '?');
+    // Remove trailing & or ?
+    cleanedURI = cleanedURI.replace(/[&?]$/, '');
+  }
+  
   // Log the URI structure for debugging (first 50 chars)
   console.log('MongoDB URI structure check:', {
-    starts_with: MONGODB_URI.substring(0, 15),
-    has_at_symbol: MONGODB_URI.includes('@'),
-    has_slash_after_net: MONGODB_URI.includes('.net/'),
-    length: MONGODB_URI.length
+    original_starts_with: MONGODB_URI.substring(0, 15),
+    cleaned_starts_with: cleanedURI.substring(0, 15),
+    has_at_symbol: cleanedURI.includes('@'),
+    has_slash_after_net: cleanedURI.includes('.net/'),
+    original_length: MONGODB_URI.length,
+    cleaned_length: cleanedURI.length,
+    removed_ssl: MONGODB_URI !== cleanedURI
   });
 
   if (!MONGODB_DB) {
@@ -85,7 +101,7 @@ export async function connectToDatabase() {
       maxIdleTimeMS: 30000,
     };
 
-    cached.promise = MongoClient.connect(MONGODB_URI, opts).then((client) => {
+    cached.promise = MongoClient.connect(cleanedURI, opts).then((client) => {
       console.log('MongoDB connected successfully!',"MONGODB_URI:",MONGODB_URI, "MONGODB_DB:",MONGODB_DB);
       return {
         client,
