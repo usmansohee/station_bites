@@ -62,9 +62,9 @@ function Dish({ _id, title, price, description, category, image }) {
                 e.target.src = placeholderImage;
               }
             }}
-            onLoad={(e) => {
-              console.log("Image loaded successfully:", e.target.src);
-            }}
+            // onLoad={(e) => {
+            //   console.log("Image loaded successfully:", e.target.src);
+            // }}
           />
         </div>
         <h4 className="my-3 font-medium capitalize">
