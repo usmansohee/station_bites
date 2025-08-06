@@ -12,8 +12,8 @@ if (!cached) {
 }
 
 export async function connectToDatabase() {
-  // Hardcoded production connection string (minimal format)
-  const MONGODB_URI = "mongodb+srv://stationbites227:4Hqr0yaRciDkItjv@cluster0.g6qtkwl.mongodb.net/stationbites227";
+  // Use the original working cluster from your env debug
+  const MONGODB_URI = "mongodb+srv://stationbites227:4Hqr0yaRciDkItjv@ac-2hozgzm-shard-00-01.g6qtkwl.mongodb.net/stationbites227";
   
   // Set database name for production
   const MONGODB_DB = "stationbites227";
