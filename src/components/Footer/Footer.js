@@ -20,7 +20,7 @@ function Footer({ admin }) {
           <div className="text-center text-gray-400 text-xs flex flex-col items-center justify-center space-y-1">
             <div className="flex items-center">
               <PhoneIcon className="w-4 h-4 mr-2" />
-              <span>07367349422</span>
+              <span>01501747419</span>
             </div>
             <div className="flex items-center">
               <LocationMarkerIcon className="w-4 h-4 mr-2" />

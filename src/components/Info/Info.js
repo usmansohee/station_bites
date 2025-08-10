@@ -12,8 +12,8 @@ function Info() {
                     <div>
                         <ClockIcon className="lg:w-12 w-10 text-primary-light mx-auto " />
                     </div>
-                    <h3 className="font-semibold">Mon - Thurs 10am - 7pm</h3>
-                    <h3 className="font-semibold">Fri - Sun 10am - 10pm</h3>
+                    <h3 className="font-semibold">Mon - Thurs 04pm - 12am</h3>
+                    <h3 className="font-semibold">Fri - Sun 04pm - 01am</h3>
                     {/* <h4>Working Hours</h4> */}
                 </div>
                 <div className="flex flex-col items-center gap-2">
@@ -27,7 +27,7 @@ function Info() {
                     <div>
                         <PhoneIcon className="lg:w-12 w-10 text-primary-light mx-auto" />
                     </div>
-                    <h3 className="font-semibold">07367349422</h3>
+                    <h3 className="font-semibold">01501747419</h3>
                     <h4>Call Now</h4>
                 </div>
             </div>
