@@ -32,7 +32,7 @@ function About() {
                     We specialize in traditional tandoori chicken prepared with aromatic spices and cooked to perfection.
                   </p>
                   <p className="mb-4">
-                    Our signature 3-in-1 tandoori chicken combines three delicious preparations in one meal - 
+                    Our signature 3-in-1 hot tandoori chicken combines three delicious preparations in one meal - 
                     all made with fresh ingredients and traditional cooking methods for an unforgettable dining experience.
                   </p>
                   <p className="mt-6">
