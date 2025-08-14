@@ -29,7 +29,7 @@ function SideBarMenu({ closeSideBar }) {
       <div>
         <Image
           src="/img/station-bite-logo.svg"
-          alt="3 in 1 Tandoori Chicken"
+          alt="3 in 1 Hot Tandoori Chicken"
           className="cursor-pointer"
           width={120}
           objectFit="contain"

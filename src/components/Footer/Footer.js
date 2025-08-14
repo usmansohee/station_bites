@@ -24,11 +24,11 @@ function Footer({ admin }) {
             </div>
             <div className="flex items-center">
               <LocationMarkerIcon className="w-4 h-4 mr-2" />
-              <span>ML7 4AW, 227 Station Road, Shottos</span>
+              <span>ML7 4AW, 227 Station Road, Shotts</span>
             </div>
           </div>
           <div className="text-gray-400 text-xs">
-            © {new Date().getFullYear()} (3 in 1 Tandoori Chicken) All rights reserved.
+            © {new Date().getFullYear()} (3 in 1 Hot Tandoori Chicken) All rights reserved.
           </div>
         </div>
       </div>

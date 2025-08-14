@@ -6,7 +6,7 @@ function orderDetails() {
   return (
     <>
       <Head>
-        <title>3 in 1 Tandoori Chicken | OrderDetails</title>
+        <title>3 in 1 Hot Tandoori Chicken | OrderDetails</title>
       </Head>
       <OrderDetails id={router.query?.id} />
     </>

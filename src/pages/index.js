@@ -4,7 +4,6 @@ import FoodGallery from "../components/FoodGallery/FoodGallery";
 import HowItWork from "../components/HowItWork/HowItWork";
 import Info from "../components/Info/Info";
 import Menu from "../components/Menu/Menu";
-import Testimonials from "../components/Testimonials/Testimonials";
 import getCategories from "../util/getCategories";
 import getDishes from "../util/getDishes";
 import { connectToDatabase } from "../util/mongodb";
@@ -28,7 +27,6 @@ export default function Home(props) {
       <FoodGallery />
       <HowItWork/>
       <Menu dishes={dishes} categories={categories} />
-      <Testimonials/>
     </>
   );
 }

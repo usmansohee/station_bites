@@ -15,7 +15,7 @@ function Success() {
   return (
     <>
       <Head>
-        <title>3 in 1 Tandoori Chicken | Order Placed Successfully</title>
+        <title>3 in 1 Hot Tandoori Chicken | Order Placed Successfully</title>
       </Head>
       <div className="bg-gray-100 heightFix flex items-center sm:px-6">
         <main className="max-w-screen-lg mx-auto">

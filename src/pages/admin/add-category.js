@@ -61,7 +61,7 @@ function AddCategory() {
   return (
     <>
       <Head>
-        <title>3 in 1 Tandoori Chicken | Add Category</title>
+        <title>3 in 1 Hot Tandoori Chicken | Add Category</title>
       </Head>
       <div className="heightFixAdmin px-4 lg:py-6 sm:py-4 py-4 overflow-y-auto">
         <div className="mx-auto max-w-screen-sm sm:text-base text-sm">

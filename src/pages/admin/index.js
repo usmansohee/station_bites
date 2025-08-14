@@ -31,7 +31,7 @@ function Admin() {
   return (
     <>
       <Head>
-        <title>3 in 1 Tandoori Chicken | Admin Panel</title>
+        <title>3 in 1 Hot Tandoori Chicken | Admin Panel</title>
       </Head>
       <div className="heightFixAdmin px-6 flex items-center justify-center">
         <div className="max-w-screen-xs mx-auto lg:text-lg xs:text-base text-sm text-center font-medium text-primary-light">

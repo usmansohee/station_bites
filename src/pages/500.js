@@ -6,7 +6,7 @@ export default function Custom500() {
   return (
     <>
       <Head>
-        <title>3 in 1 Tandoori Chicken | Internal Server Error</title>
+        <title>3 in 1 Hot Tandoori Chicken | Internal Server Error</title>
       </Head>
       <div className="heightFix flex items-center justify-center text-center">
         <div className="max-w-screen-xl mx-auto flex-col items-center justify-center">

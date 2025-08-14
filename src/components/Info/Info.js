@@ -20,7 +20,7 @@ function Info() {
                     <div>
                         <LocationMarkerIcon className="lg:w-12 w-10 text-primary-light mx-auto" />
                     </div>
-                    <h3 className="font-semibold">227 Station Road, Shottos</h3>
+                    <h3 className="font-semibold">227 Station Road, Shotts</h3>
                     <h4>Get Directions</h4>
                 </div>
                 <div className="flex flex-col items-center gap-2">

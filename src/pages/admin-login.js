@@ -43,7 +43,7 @@ export default function AdminLogin() {
   return (
     <>
       <Head>
-        <title>Admin Login | 3 in 1 Tandoori Chicken</title>
+        <title>Admin Login | 3 in 1 Hot Tandoori Chicken</title>
       </Head>
       <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full">
@@ -53,7 +53,7 @@ export default function AdminLogin() {
             <div className="text-center mb-8">
               <img
                 src="/img/station-bite-logo.svg"
-                alt="3 in 1 Tandoori Chicken"
+                alt="3 in 1 Hot Tandoori Chicken"
                 className="mx-auto h-16 w-auto mb-4"
               />
             </div>

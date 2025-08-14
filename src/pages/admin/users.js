@@ -12,7 +12,7 @@ function Users() {
   return (
     <>
       <Head>
-        <title>3 in 1 Tandoori Chicken | Users</title>
+        <title>3 in 1 Hot Tandoori Chicken | Users</title>
       </Head>
       <div className="heightFixAdmin bg-gray-100 py-10 md:px-6">
         <div className="max-w-screen-xl mx-auto bg-white  shadow rounded-md my-6">

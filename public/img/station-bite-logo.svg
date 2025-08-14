@@ -25,11 +25,11 @@
   <!-- "3 in 1" text -->
   <text x="65" y="20" font-family="Arial Black, sans-serif" font-size="16" font-weight="bold" fill="url(#textGradient)">3 in 1</text>
   
-  <!-- "TANDOORI" text -->
-  <text x="65" y="35" font-family="Arial Black, sans-serif" font-size="12" font-weight="bold" fill="#DC143C">TANDOORI</text>
+  <!-- "HOT" text -->
+  <text x="65" y="35" font-family="Arial Black, sans-serif" font-size="12" font-weight="bold" fill="#FF4500">HOT</text>
   
-  <!-- "CHICKEN" text -->
-  <text x="65" y="48" font-family="Arial Black, sans-serif" font-size="12" font-weight="bold" fill="#8B4513">CHICKEN</text>
+  <!-- "TANDOORI" text -->
+  <text x="65" y="48" font-family="Arial Black, sans-serif" font-size="12" font-weight="bold" fill="#DC143C">TANDOORI</text>
   
   <!-- Decorative spice dots -->
   <circle cx="160" cy="15" r="2" fill="#FF6B35"/>

@@ -61,10 +61,10 @@ function Layout({ children, admin, auth }) {
                     name="viewport"
                     content="width=device-width,initial-scale=1.0,minimum-scale=1.0"
                 />
-                <title>3 in 1 Tandoori Chicken</title>
+                <title>3 in 1 Hot Tandoori Chicken</title>
                 <meta
                     name="description"
-                    content="Authentic Tandoori Chicken restaurant - 3 in 1 Tandoori Chicken"
+                    content="Authentic Tandoori Chicken restaurant - 3 in 1 Hot Tandoori Chicken"
                 />
                 <link
                     rel="apple-touch-icon"

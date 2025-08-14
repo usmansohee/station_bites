@@ -16,9 +16,9 @@
 
 
 
-# 3 in 1 Tandoori Chicken
+# 3 in 1 Hot Tandoori Chicken
 
-Food ordering website for 3 in 1 Tandoori Chicken restaurant built using Next.js, TailwindCSS, Redux, Mongodb
+Food ordering website for 3 in 1 Hot Tandoori Chicken restaurant built using Next.js, TailwindCSS, Redux, Mongodb
 
 ![Logo](https://zinger.vercel.app/_next/image?url=%2Fimg%2FZinger.svg&w=128&q=75)
 
