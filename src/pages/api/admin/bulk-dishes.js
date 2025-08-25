@@ -63,20 +63,11 @@ async function handleBulkInsert(db, dishes) {
             continue;
         }
         
-        if (!dish.category || typeof dish.category !== 'string' || dish.category.trim().length < 2) {
+        // Category is optional but if provided, must be valid
+        if (dish.category && (typeof dish.category !== 'string' || dish.category.trim().length < 2)) {
             errors.push({
                 index: i,
-                error: "Dish category must be at least 2 characters long",
-                data: dish
-            });
-            continue;
-        }
-        
-        // Validate prices - at least one price must be provided
-        if (!dish.regularPrice && !dish.largePrice && !dish.kingPrice) {
-            errors.push({
-                index: i,
-                error: "At least one price must be provided (regularPrice, largePrice, or kingPrice)",
+                error: "Dish category must be at least 2 characters long if provided",
                 data: dish
             });
             continue;
@@ -113,44 +104,52 @@ async function handleBulkInsert(db, dishes) {
 
         
         const trimmedTitle = dish.title.trim();
-        const trimmedCategory = dish.category.trim().toLowerCase(); // Convert to lowercase
+        const trimmedCategory = dish.category ? dish.category.trim().toLowerCase() : null;
         
-        // Check if dish already exists (by title and category combination)
-        const existingDish = await db.collection("dishes").findOne({ 
-            title: { $regex: new RegExp(`^${trimmedTitle}$`, 'i') },
-            category: trimmedCategory
-        });
+        // Check if dish already exists (by title only if no category)
+        let existingDish;
+        if (trimmedCategory) {
+            existingDish = await db.collection("dishes").findOne({ 
+                title: { $regex: new RegExp(`^${trimmedTitle}$`, 'i') },
+                category: trimmedCategory
+            });
+        } else {
+            existingDish = await db.collection("dishes").findOne({ 
+                title: { $regex: new RegExp(`^${trimmedTitle}$`, 'i') }
+            });
+        }
         
         if (existingDish) {
             errors.push({
                 index: i,
-                error: "Dish already exists with this title and category",
+                error: "Dish already exists with this title",
                 data: dish
             });
             continue;
         }
         
-        // Automatically create category if it doesn't exist
-        const categoryExists = await db.collection("categories").findOne({ 
-            name: trimmedCategory 
-        });
-        
-        if (!categoryExists) {
-            await db.collection("categories").insertOne({
-                name: trimmedCategory,
-                createdAt: new Date()
+        // Automatically create category if provided and doesn't exist
+        if (trimmedCategory) {
+            const categoryExists = await db.collection("categories").findOne({ 
+                name: trimmedCategory 
             });
+            
+            if (!categoryExists) {
+                await db.collection("categories").insertOne({
+                    name: trimmedCategory,
+                    createdAt: new Date()
+                });
+            }
         }
         
         validDishes.push({
             title: trimmedTitle,
-            category: trimmedCategory.toLowerCase(), // Convert to lowercase
             createdAt: new Date(),
-            // Prices - only include if provided
+            // Optional fields - only include if provided
+            ...(trimmedCategory && { category: trimmedCategory }),
             ...(dish.regularPrice && { regularPrice: parseFloat(dish.regularPrice) }),
             ...(dish.largePrice && { largePrice: parseFloat(dish.largePrice) }),
             ...(dish.kingPrice && { kingPrice: parseFloat(dish.kingPrice) }),
-            // Optional fields
             ...(dish.image && { image: dish.image.trim() }),
             ...(dish.description && { description: dish.description.trim() })
         });

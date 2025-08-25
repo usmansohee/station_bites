@@ -47,16 +47,10 @@ export default async (req, res) => {
 
     console.log("Received dish data:", { title, category, description, regularPrice, largePrice, kingPrice, image });
 
-    // Validate required fields
-    if (!title || !category) {
-      console.log("Missing required fields");
-      return res.status(400).json({ message: "Title and category are required" });
-    }
-
-    // Validate prices - at least one price must be provided
-    if (!regularPrice && !largePrice && !kingPrice) {
-      console.log("No prices provided");
-      return res.status(400).json({ message: "At least one price must be provided (regularPrice, largePrice, or kingPrice)" });
+    // Only title is required
+    if (!title) {
+      console.log("Missing required field");
+      return res.status(400).json({ message: "Title is required" });
     }
 
     // Validate each price if provided
@@ -80,13 +74,12 @@ export default async (req, res) => {
     // Insert the dish
     const result = await db.collection("dishes").insertOne({
       title: title.trim(),
-      category: category.trim().toLowerCase(),
       createdAt: new Date(),
-      // Prices - only include if provided
+      // Optional fields - only include if provided
+      ...(category && { category: category.trim().toLowerCase() }),
       ...(regularPrice && { regularPrice: parseFloat(regularPrice) }),
       ...(largePrice && { largePrice: parseFloat(largePrice) }),
       ...(kingPrice && { kingPrice: parseFloat(kingPrice) }),
-      // Optional fields
       ...(description && { description: description.trim() }),
       ...(image && { image: image.trim() })
     });

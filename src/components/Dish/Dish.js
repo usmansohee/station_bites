@@ -4,7 +4,7 @@ import { addToCart } from "../../slices/cartSlice";
 import Fade from "react-reveal/Fade";
 import { ShoppingCartIcon } from "@heroicons/react/solid";
 
-function Dish({ _id, title, price, description, category, image }) {
+function Dish({ _id, title, regularPrice, largePrice, kingPrice, description, category, image }) {
   const dispatch = useDispatch();
   
   // Process image URL to use the correct API endpoint for uploaded images
@@ -27,12 +27,18 @@ function Dish({ _id, title, price, description, category, image }) {
   const placeholderImage = '/img/empty.svg';
   
   const addItemToCart = () => {
+    // Use the first available price for cart
+    const cartPrice = regularPrice || largePrice || kingPrice;
+    
     //Sending the Dish as an action to the REDUX store... the cart slice
     dispatch(
       addToCart({
         _id,
         title,
-        price,
+        price: cartPrice,
+        regularPrice,
+        largePrice,
+        kingPrice,
         description,
         category,
         image,
@@ -74,7 +80,9 @@ function Dish({ _id, title, price, description, category, image }) {
           {description}
         </p>
         <div className="mb-5 mt-2 font-bold text-gray-700">
-          {formatCurrency(price)}
+          {regularPrice && <div>Regular: {formatCurrency(regularPrice)}</div>}
+          {largePrice && <div>Large: {formatCurrency(largePrice)}</div>}
+          {kingPrice && <div>King: {formatCurrency(kingPrice)}</div>}
         </div>
         <button
           className="mt-auto button flex items-center justify-center"

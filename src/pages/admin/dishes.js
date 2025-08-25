@@ -25,10 +25,12 @@ function Dishes(props) {
     const fuse = new Fuse(dishes ? dishes : [], options);
     const result = fuse
       .search(term)
-      .map(({ item: { _id, title, price, description, category, image } }) => ({
+      .map(({ item: { _id, title, regularPrice, largePrice, kingPrice, description, category, image } }) => ({
         _id,
         title,
-        price,
+        regularPrice,
+        largePrice,
+        kingPrice,
         description,
         category,
         image,
@@ -65,11 +67,13 @@ function Dishes(props) {
           </div>
           <div className="overflow-y-auto hideScrollBar h-full p-1">
             {(searchTerm ? searchResult : dishes)?.map(
-              ({ _id, title, price, description, category, image }, i) => (
+              ({ _id, title, regularPrice, largePrice, kingPrice, description, category, image }, i) => (
                 <DishInfo
                   _id={_id}
                   title={title}
-                  price={price}
+                  regularPrice={regularPrice}
+                  largePrice={largePrice}
+                  kingPrice={kingPrice}
                   description={description}
                   category={category}
                   image={image}

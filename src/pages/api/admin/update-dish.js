@@ -33,14 +33,9 @@ export default async (req, res) => {
 
             const { _id, title, category, description, regularPrice, largePrice, kingPrice, image } = req.body;
             
-            // Validate required fields
-            if (!_id || !title || !category) {
-                return res.status(400).json({ message: "ID, title, and category are required" });
-            }
-
-            // Validate prices - at least one price must be provided
-            if (!regularPrice && !largePrice && !kingPrice) {
-                return res.status(400).json({ message: "At least one price must be provided (regularPrice, largePrice, or kingPrice)" });
+            // Only ID and title are required
+            if (!_id || !title) {
+                return res.status(400).json({ message: "ID and title are required" });
             }
 
             // Validate each price if provided
@@ -61,13 +56,12 @@ export default async (req, res) => {
                 { _id: new ObjectId(_id) },
                 { 
                     title: title.trim(),
-                    category: category.trim().toLowerCase(),
                     updatedAt: new Date(),
-                    // Prices - only include if provided
+                    // Optional fields - only include if provided
+                    ...(category && { category: category.trim().toLowerCase() }),
                     ...(regularPrice && { regularPrice: parseFloat(regularPrice) }),
                     ...(largePrice && { largePrice: parseFloat(largePrice) }),
                     ...(kingPrice && { kingPrice: parseFloat(kingPrice) }),
-                    // Optional fields
                     ...(description && { description: description.trim() }),
                     ...(image && { image: image.trim() })
                 }

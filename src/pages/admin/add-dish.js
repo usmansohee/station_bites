@@ -112,12 +112,6 @@ function AddDish(props) {
   const formHandler = async (e) => {
     e.preventDefault();
     
-    // Check if at least one price is provided
-    if (!regularPrice && !largePrice && !kingPrice) {
-      NormalToast("Please provide at least one price (Regular, Large, or King)", true);
-      return;
-    }
-    
     if (!imageFile) {
       NormalToast("Please select an image file", true);
       return;
@@ -210,7 +204,6 @@ function AddDish(props) {
               disabled={disabled}
             />
             <select
-              required
               className="bg-gray-100 py-2 px-3 rounded-md outline-none border border-gray-200 capitalize"
               onChange={(e) => setCategory(e.target.value)}
               disabled={disabled}
@@ -223,8 +216,7 @@ function AddDish(props) {
               ))}
             </select>
             <textarea
-              required
-              placeholder="Description"
+              placeholder="Description (Optional)"
               className="bg-gray-100 border border-gray-200 py-2 px-3 rounded-md resize-none h-20 outline-none"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -235,7 +227,7 @@ function AddDish(props) {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <input
                 type="number"
-                placeholder="Regular Price"
+                placeholder="Regular Price (Optional)"
                 className="bg-gray-100 border py-2 px-3 rounded-md outline-none border-gray-200"
                 value={regularPrice}
                 onChange={(e) => setRegularPrice(e.target.value)}
@@ -243,7 +235,7 @@ function AddDish(props) {
               />
               <input
                 type="number"
-                placeholder="Large Price"
+                placeholder="Large Price (Optional)"
                 className="bg-gray-100 border py-2 px-3 rounded-md outline-none border-gray-200"
                 value={largePrice}
                 onChange={(e) => setLargePrice(e.target.value)}
@@ -251,7 +243,7 @@ function AddDish(props) {
               />
               <input
                 type="number"
-                placeholder="King Price"
+                placeholder="King Price (Optional)"
                 className="bg-gray-100 border py-2 px-3 rounded-md outline-none border-gray-200"
                 value={kingPrice}
                 onChange={(e) => setKingPrice(e.target.value)}
@@ -259,13 +251,13 @@ function AddDish(props) {
               />
             </div>
             <p className="text-xs text-gray-500 -mt-2">
-              At least one price is required. Leave empty if not applicable.
+              All fields are optional except title. Leave empty if not applicable.
             </p>
             
             {/* Image Upload Section */}
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">
-                Dish Image *
+                Dish Image (Optional)
               </label>
               <input
                 type="file"
@@ -273,7 +265,6 @@ function AddDish(props) {
                 onChange={handleImageChange}
                 className="w-full bg-gray-100 py-2 px-3 rounded-md outline-none border border-gray-200 cursor-pointer"
                 disabled={disabled}
-                required
               />
               {imagePreview && (
                 <div className="mt-2">

@@ -50,12 +50,14 @@ function Menu({ dishes = [], categories = [] }) {
       </div>
       <div className="grid grid-flow-row-dense sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 grid-cols-1 mx-auto max-w-screen-xl gap-x-6 gap-y-8">
         {(categoryActive === "all" ? (dishes || []) : (filteredDishes || []))?.map(
-          ({ _id, title, price, description, category, image }) => (
+          ({ _id, title, regularPrice, largePrice, kingPrice, description, category, image }) => (
             <Dish
               key={`dish-${_id}`}
               _id={_id}
               title={title}
-              price={price}
+              regularPrice={regularPrice}
+              largePrice={largePrice}
+              kingPrice={kingPrice}
               description={description}
               category={category}
               image={image}
