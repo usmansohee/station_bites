@@ -43,20 +43,36 @@ export default async (req, res) => {
 
     console.log("Authentication successful, processing dish data");
 
-    const { title, category, description, price, image } = req.body;
+    const { title, category, description, regularPrice, largePrice, kingPrice, image } = req.body;
 
-    console.log("Received dish data:", { title, category, description, price, image });
+    console.log("Received dish data:", { title, category, description, regularPrice, largePrice, kingPrice, image });
 
     // Validate required fields
-    if (!title || !category || !description || !price || !image) {
+    if (!title || !category) {
       console.log("Missing required fields");
-      return res.status(400).json({ message: "All fields are required" });
+      return res.status(400).json({ message: "Title and category are required" });
     }
 
-    // Validate price
-    if (isNaN(price) || parseFloat(price) <= 0) {
-      console.log("Invalid price:", price);
-      return res.status(400).json({ message: "Price must be a positive number" });
+    // Validate prices - at least one price must be provided
+    if (!regularPrice && !largePrice && !kingPrice) {
+      console.log("No prices provided");
+      return res.status(400).json({ message: "At least one price must be provided (regularPrice, largePrice, or kingPrice)" });
+    }
+
+    // Validate each price if provided
+    if (regularPrice && (isNaN(regularPrice) || parseFloat(regularPrice) <= 0)) {
+      console.log("Invalid regular price:", regularPrice);
+      return res.status(400).json({ message: "Regular price must be a positive number" });
+    }
+
+    if (largePrice && (isNaN(largePrice) || parseFloat(largePrice) <= 0)) {
+      console.log("Invalid large price:", largePrice);
+      return res.status(400).json({ message: "Large price must be a positive number" });
+    }
+
+    if (kingPrice && (isNaN(kingPrice) || parseFloat(kingPrice) <= 0)) {
+      console.log("Invalid king price:", kingPrice);
+      return res.status(400).json({ message: "King price must be a positive number" });
     }
 
     console.log("Validation passed, inserting dish");
@@ -64,11 +80,15 @@ export default async (req, res) => {
     // Insert the dish
     const result = await db.collection("dishes").insertOne({
       title: title.trim(),
-      category: category.trim(),
-      description: description.trim(),
-      price: parseFloat(price),
-      image: image,
-      createdAt: new Date()
+      category: category.trim().toLowerCase(),
+      createdAt: new Date(),
+      // Prices - only include if provided
+      ...(regularPrice && { regularPrice: parseFloat(regularPrice) }),
+      ...(largePrice && { largePrice: parseFloat(largePrice) }),
+      ...(kingPrice && { kingPrice: parseFloat(kingPrice) }),
+      // Optional fields
+      ...(description && { description: description.trim() }),
+      ...(image && { image: image.trim() })
     });
 
     console.log("Dish inserted successfully:", result.insertedId);

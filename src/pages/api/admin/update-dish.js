@@ -31,16 +31,29 @@ export default async (req, res) => {
                 return res.status(401).json({ message: "Unauthorized - Invalid or expired session" });
             }
 
-            const { _id, title, category, description, price, image } = req.body;
+            const { _id, title, category, description, regularPrice, largePrice, kingPrice, image } = req.body;
             
             // Validate required fields
-            if (!_id || !title || !category || !description || !price || !image) {
-                return res.status(400).json({ message: "All fields are required" });
+            if (!_id || !title || !category) {
+                return res.status(400).json({ message: "ID, title, and category are required" });
             }
 
-            // Validate price
-            if (isNaN(price) || parseFloat(price) <= 0) {
-                return res.status(400).json({ message: "Price must be a positive number" });
+            // Validate prices - at least one price must be provided
+            if (!regularPrice && !largePrice && !kingPrice) {
+                return res.status(400).json({ message: "At least one price must be provided (regularPrice, largePrice, or kingPrice)" });
+            }
+
+            // Validate each price if provided
+            if (regularPrice && (isNaN(regularPrice) || parseFloat(regularPrice) <= 0)) {
+                return res.status(400).json({ message: "Regular price must be a positive number" });
+            }
+
+            if (largePrice && (isNaN(largePrice) || parseFloat(largePrice) <= 0)) {
+                return res.status(400).json({ message: "Large price must be a positive number" });
+            }
+
+            if (kingPrice && (isNaN(kingPrice) || parseFloat(kingPrice) <= 0)) {
+                return res.status(400).json({ message: "King price must be a positive number" });
             }
 
             // Update the dish
@@ -48,11 +61,15 @@ export default async (req, res) => {
                 { _id: new ObjectId(_id) },
                 { 
                     title: title.trim(),
-                    category: category.trim(),
-                    description: description.trim(),
-                    price: parseFloat(price),
-                    image: image,
-                    updatedAt: new Date()
+                    category: category.trim().toLowerCase(),
+                    updatedAt: new Date(),
+                    // Prices - only include if provided
+                    ...(regularPrice && { regularPrice: parseFloat(regularPrice) }),
+                    ...(largePrice && { largePrice: parseFloat(largePrice) }),
+                    ...(kingPrice && { kingPrice: parseFloat(kingPrice) }),
+                    // Optional fields
+                    ...(description && { description: description.trim() }),
+                    ...(image && { image: image.trim() })
                 }
             );
 
