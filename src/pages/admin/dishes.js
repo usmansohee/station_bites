@@ -3,6 +3,7 @@ import { connectToDatabase } from "../../util/mongodb";
 import getDishes from "../../util/getDishes";
 import Head from "next/head";
 import DishInfo from "../../components/Dish/DishInfo";
+import { normalizeCategory } from "../../util/categoryUtils";
 
 function Dishes(props) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -32,7 +33,7 @@ function Dishes(props) {
         largePrice,
         kingPrice,
         description,
-        category,
+        category: normalizeCategory(category), // Normalize to lowercase
         image,
       }));
     setSearchResult(result);
@@ -75,7 +76,7 @@ function Dishes(props) {
                   largePrice={largePrice}
                   kingPrice={kingPrice}
                   description={description}
-                  category={category}
+                  category={normalizeCategory(category)}
                   image={image}
                   border={i + 1 !== dishes?.length}
                   key={`dish-${_id}`}

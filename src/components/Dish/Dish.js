@@ -4,6 +4,12 @@ import { addToCart } from "../../slices/cartSlice";
 import Fade from "react-reveal/Fade";
 import { ShoppingCartIcon } from "@heroicons/react/solid";
 
+// Helper function to format category display (capitalize first letter)
+const formatCategoryDisplay = (category) => {
+  if (!category) return '';
+  return category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
+};
+
 function Dish({ _id, title, regularPrice, largePrice, kingPrice, description, category, image }) {
   const dispatch = useDispatch();
   
@@ -52,7 +58,7 @@ function Dish({ _id, title, regularPrice, largePrice, kingPrice, description, ca
     <Fade bottom>
       <div className="relative flex flex-col   bg-white z-20  md:p-8 p-6 rounded-md shadow-lg">
         <p className="absolute top-2 right-3 text-xs italic text-gray-400 capitalize">
-          {category}
+          {formatCategoryDisplay(category)}
         </p>
         <div className="relative">
           <img

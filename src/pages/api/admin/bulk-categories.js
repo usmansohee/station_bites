@@ -79,7 +79,7 @@ async function handleBulkInsert(db, categories) {
         }
         
         validCategories.push({
-            name: trimmedName,
+            name: trimmedName.toLowerCase(), // Always save in lowercase
             createdAt: new Date(),
             ...(category.description && { description: category.description.trim() }),
             ...(category.isActive !== undefined && { isActive: category.isActive })

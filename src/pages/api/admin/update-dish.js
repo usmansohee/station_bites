@@ -58,7 +58,7 @@ export default async (req, res) => {
                     title: title.trim(),
                     updatedAt: new Date(),
                     // Optional fields - only include if provided
-                    ...(category && { category: category.trim().toLowerCase() }),
+                    ...(category && { category: category.trim().toLowerCase() }), // Always save in lowercase
                     ...(regularPrice && { regularPrice: parseFloat(regularPrice) }),
                     ...(largePrice && { largePrice: parseFloat(largePrice) }),
                     ...(kingPrice && { kingPrice: parseFloat(kingPrice) }),

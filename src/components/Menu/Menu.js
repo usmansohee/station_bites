@@ -1,6 +1,13 @@
 import Dish from "../Dish/Dish";
 import { useState } from "react";
 import { AdjustmentsIcon } from "@heroicons/react/outline";
+import { filterDishesByCategory } from "../../util/categoryUtils";
+
+// Helper function to format category display (capitalize first letter)
+const formatCategoryDisplay = (category) => {
+  if (!category) return '';
+  return category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
+};
 
 function Menu({ dishes = [], categories = [] }) {
   const [categoryActive, setCategoryActive] = useState("all");
@@ -16,9 +23,7 @@ function Menu({ dishes = [], categories = [] }) {
   };
 
   const filterDishes = (category) => {
-    setFilteredDishes(
-      (dishes || []).filter((dish) => dish?.category === category)
-    );
+    setFilteredDishes(filterDishesByCategory(dishes, category));
   };
 
   return (
@@ -44,7 +49,7 @@ function Menu({ dishes = [], categories = [] }) {
               }`}
             onClick={() => activeCategoryHandler(category?.name)}
           >
-            {category?.name}
+            {formatCategoryDisplay(category?.name)}
           </div>
         ))}
       </div>

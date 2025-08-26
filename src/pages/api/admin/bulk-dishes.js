@@ -146,7 +146,7 @@ async function handleBulkInsert(db, dishes) {
             title: trimmedTitle,
             createdAt: new Date(),
             // Optional fields - only include if provided
-            ...(trimmedCategory && { category: trimmedCategory }),
+            ...(trimmedCategory && { category: trimmedCategory.toLowerCase() }), // Always save in lowercase
             ...(dish.regularPrice && { regularPrice: parseFloat(dish.regularPrice) }),
             ...(dish.largePrice && { largePrice: parseFloat(dish.largePrice) }),
             ...(dish.kingPrice && { kingPrice: parseFloat(dish.kingPrice) }),
@@ -154,6 +154,9 @@ async function handleBulkInsert(db, dishes) {
             ...(dish.description && { description: dish.description.trim() })
         });
     }
+    
+    console.log("Valid dishes to insert:", validDishes.length);
+    console.log("Errors found:", errors.length);
     
     if (validDishes.length === 0) {
         return {
@@ -164,12 +167,27 @@ async function handleBulkInsert(db, dishes) {
     }
     
     // Perform bulk insert
+    console.log("Inserting dishes:", validDishes);
     const insertResult = await db.collection("dishes").insertMany(validDishes);
+    console.log("Insert result:", insertResult);
+    
+    // Check if insert was successful
+    if (!insertResult || !insertResult.insertedIds) {
+        console.error("Insert failed:", insertResult);
+        return {
+            success: false,
+            message: "Failed to insert dishes - database error",
+            errors: errors
+        };
+    }
+    
+    const insertedCount = Object.keys(insertResult.insertedIds).length;
+    console.log("Inserted count:", insertedCount);
     
     return {
         success: true,
-        message: `Successfully inserted ${insertResult.insertedIds.length} dishes`,
-        insertedCount: insertResult.insertedIds.length,
+        message: `Successfully inserted ${insertedCount} dishes`,
+        insertedCount: insertedCount,
         insertedIds: Object.values(insertResult.insertedIds),
         errors: errors
     };
