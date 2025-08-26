@@ -36,10 +36,20 @@ async function fixAllCategories() {
       console.log(`  "${cat.name}": ${dishCount} dishes`);
     }
     
-    // Step 3: Find empty categories
+    // Step 3: Find and remove empty categories
     const emptyCategories = categoryStats.filter(cat => cat.dishCount === 0);
     console.log(`\nEmpty categories: ${emptyCategories.length}`);
     emptyCategories.forEach(cat => console.log(`  - "${cat.name}"`));
+    
+    // Remove empty categories
+    if (emptyCategories.length > 0) {
+      console.log('\n=== REMOVING EMPTY CATEGORIES ===');
+      for (const emptyCat of emptyCategories) {
+        console.log(`Removing empty category: "${emptyCat.name}"`);
+        await db.collection("categories").deleteOne({ _id: emptyCat.id });
+      }
+      console.log(`Removed ${emptyCategories.length} empty categories`);
+    }
     
     // Step 4: Find categories with similar names (potential duplicates)
     console.log('\n=== FINDING SIMILAR CATEGORIES ===');
