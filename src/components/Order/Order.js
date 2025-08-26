@@ -114,7 +114,7 @@ function Order({ _id, id, amount_total, timestamp, items, status, admin }) {
                 <div>
                   <p className="text-xs font-bold">TOTAL</p>
                   <p className="text-xs font-bold text-red-500">
-                    <Currency quantity={amount_total} currency="INR" />
+                    <Currency quantity={amount_total} currency="GBP" />
                   </p>
                 </div>
               </div>

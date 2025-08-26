@@ -87,9 +87,9 @@ function CartDish({
             {description}
           </p>
           <span className="font-medium md:text-base text-sm">
-            {qty} × <Currency quantity={price} currency="INR" /> =
+            {qty} × <Currency quantity={price} currency="GBP" /> =
             <span className="font-bold text-gray-700 mx-1">
-              <Currency quantity={total} currency="INR" />
+              <Currency quantity={total} currency="GBP" />
             </span>
           </span>
         </div>

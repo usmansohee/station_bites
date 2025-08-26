@@ -13,7 +13,7 @@ function OrderItem({ item }) {
                     </p>
                     <p className="font-semibold">
                         <span className="font-normal">Price - </span>
-                        <Currency quantity={item?.price} currency="INR" />
+                        <Currency quantity={item?.price} currency="GBP" />
                     </p>
                 </div>
             </div>

@@ -112,8 +112,10 @@ function DishInfo({
         <p className="text-gray-500 lg:text-sm text-xs">{description}</p>
         <div>
           <p className="font-semibold">
-            <span className="font-normal">Price - </span>
-            {formatCurrency(price)}
+            <span className="font-normal">Prices - </span>
+            {regularPrice && <span className="mr-2">Regular: {formatCurrency(regularPrice)}</span>}
+            {largePrice && <span className="mr-2">Large: {formatCurrency(largePrice)}</span>}
+            {kingPrice && <span className="mr-2">King: {formatCurrency(kingPrice)}</span>}
           </p>
         </div>
         <div className="flex items-center gap-3 pt-1">

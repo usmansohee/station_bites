@@ -175,21 +175,21 @@ function OrderDetails({ id, admin }) {
                       <span className="font-semibold">Subtotal - </span>
                       <Currency
                         quantity={order?.amount_subtotal / 100}
-                        currency="INR"
+                        currency="GBP"
                       />
                     </p>
                     <p className="text-green-500 font-semibold">
                       <span>Shipping - </span>
                       <Currency
                         quantity={order?.total_details?.amount_shipping / 100}
-                        currency="INR"
+                        currency="GBP"
                       />
                     </p>
                     <p className="font-bold text-red-500">
                       <span className="font-semibold">Total - </span>
                       <Currency
                         quantity={order?.amount_total / 100}
-                        currency="INR"
+                        currency="GBP"
                       />
                     </p>
                   </div>

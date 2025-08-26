@@ -109,7 +109,7 @@ function Cart() {
               <h2 className="whitespace-nowrap font-semibold overflow-x-auto hideScrollBar">
                 Subtotal ({items.length} items) :
                 <span className="font-bold text-red-500 mx-2">
-                  <Currency quantity={total} currency="INR" />
+                  <Currency quantity={total} currency="GBP" />
                 </span>
               </h2>
               {session ? (
